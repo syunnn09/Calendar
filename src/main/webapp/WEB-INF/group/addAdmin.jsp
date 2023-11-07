@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet"href="./css/group.css">
 <title>管理者追加</title>
 </head>
 <body>

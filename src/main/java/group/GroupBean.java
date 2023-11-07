@@ -6,7 +6,7 @@ public class GroupBean {
 	private String roomName;
 	private int userId;
 	private String userName;
-	
+
 	public int getAdminId() {
 		return adminId;
 	}
@@ -37,5 +37,5 @@ public class GroupBean {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+
 }
