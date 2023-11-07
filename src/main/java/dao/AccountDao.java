@@ -1,33 +1,32 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import model.UserModel;
+import java.sql.SQLException;
 
 public class AccountDao extends DaoBase {
 	
-	public UserModel login(String userId,String password) {
-		 UserModel usermodel = null;
-	
+	public int login(String email,String password) {
+		open();
 		try {
 			
-			String sql = "SELECT ID,PASSWORD";
+			String sql = "SELECT id FROM user WHERE email = ? AND password = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, getUserId());
-			pStmt.setString(2, getPassWord());
+			pStmt.setString(1, email);
+			pStmt.setString(2, password);
 			
 			ResultSet rs = pStmt.executeQuery();
 			
-			
 			if (rs.next()) {
-				String userId = rs.getString("USER_ID");
-				String userId = rs.getString("USER_ID");
-				
+				int userId = rs.getInt(1);
+				return userId;
+			} else { 
+				return -1;
 			}
-			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
 		}
+		
 	}
 }

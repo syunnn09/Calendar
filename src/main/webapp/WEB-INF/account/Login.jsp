@@ -1,16 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="utf-8">
+    <title>login</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css">
 </head>
 <body>
-<form action="/LoginServlet" method = "post">
-ユーザID:<input type="text" name = "userId"><br>
-パスワード:<input type="password" name = "password"><br>
-<input type="submit" value="ログイン">
-</form>
+    <div class="login-container">
+        <h1>LOGIN</h1>
+        <form action="LoginServlet" method="post">
+            <input type="text" name="username" placeholder="user name" required>
+            <input type="password" name="password" placeholder="password" required>
+            <button type="submit">login</button>
+        </form>
+    </div>
 </body>
 </html>
