@@ -4,9 +4,9 @@ public class ScheduleRecordBean implements Serializable{
 	
 	private int scheduleId;
 	private int roomId;
-	private String startTime;
-	private String endTime;
-	private String name;
+	private String startDate;
+	private String endDate;
+	private String title;
 	private String detail;
 	private String place;
 	
@@ -26,23 +26,23 @@ public class ScheduleRecordBean implements Serializable{
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
-	public String getStartTime() {
-		return startTime;
+	public String getStartDate() {
+		return startDate;
 	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setStartDate(String startTime) {
+		this.startDate = startTime;
 	}
-	public String getEndTime() {
-		return endTime;
+	public String getEndDate() {
+		return endDate;
 	}
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public void setEndDate(String endTime) {
+		this.endDate = endTime;
 	}
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getDetail() {
 		return detail;
