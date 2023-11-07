@@ -24,7 +24,6 @@ public class AccountDao extends DaoBase {
 
 		this.close();
 	}
-}
 
 	public int login(String email,String password) {
 		open();
