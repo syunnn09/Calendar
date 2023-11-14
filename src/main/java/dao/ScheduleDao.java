@@ -12,7 +12,7 @@ public class ScheduleDao extends DaoBase{
 	private ArrayList<ScheduleRecordBean> scheduleRecordArray = new ArrayList<ScheduleRecordBean>();
 	
 	//データベースに接続する情報
-	public void getSchedule(int groupId){
+	public void getScheduleArray(int groupId){
 		open();
 		
 		try {
@@ -75,6 +75,32 @@ public class ScheduleDao extends DaoBase{
 //	public void edit(ScheduleRecordBean bean) {
 //		
 //	}
+
+	public ScheduleRecordBean getSchedule(int scheduleId) {
+		this.open();
+		String sql = "SELECT * FROM schedules WHERE scheduleId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, scheduleId);
+
+			ResultSet rs = ps.executeQuery();
+			ScheduleRecordBean bean = new ScheduleRecordBean();
+
+			if (rs.next()) {
+				bean.setScheduleId(rs.getInt("scheduleId"));
+				bean.setTitle(rs.getString("title"));
+				bean.setRoomId(rs.getInt("roomId"));
+				bean.setStartDate(rs.getString("startDate"));
+				bean.setEndDate(rs.getString("endDate"));
+				bean.setPlace(rs.getString("place"));
+				bean.setDetail(rs.getString("detail"));
+			}
+			return bean;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public ScheduleInfoBean getAll(int userId) {
 		this.open();
