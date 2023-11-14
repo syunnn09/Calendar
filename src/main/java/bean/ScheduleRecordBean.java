@@ -11,9 +11,7 @@ public class ScheduleRecordBean implements Serializable{
 	private String place;
 	
 	public ScheduleRecordBean() {}
-	
-	
-	
+
 	public void setScheduleId(int scheduleId) {
 		this.scheduleId = scheduleId;
 	}
@@ -56,7 +54,9 @@ public class ScheduleRecordBean implements Serializable{
 	public void setPlace(String place) {
 		this.place = place;
 	}
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return this.title;
+	}
 }

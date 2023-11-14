@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ScheduleInfoBean {
 	private ArrayList<ScheduleRecordBean> scheduleRecordArray = new ArrayList<ScheduleRecordBean>();
 
-	ScheduleInfoBean() { }
+	public ScheduleInfoBean() { }
 
 	public void setScheduleRecordBean(ArrayList<ScheduleRecordBean> list) {
 		this.scheduleRecordArray = list;

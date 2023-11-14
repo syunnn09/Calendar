@@ -30,22 +30,22 @@ public class ScheduleDao extends DaoBase{
 				ScheduleInfoBean scheduleInfoBean = new ScheduleInfoBean();
 				
 				int scheduleId = rs.getInt("scheduleId");
-				scheduleRecordBean.setScheduleId(1);
+				scheduleRecordBean.setScheduleId(scheduleId);
 				
 				int roomId = rs.getInt("roomId");
-				scheduleRecordBean.setRoomId(1);
+				scheduleRecordBean.setRoomId(roomId);
 				
 				String startTime = rs.getString("startTime");
-				scheduleRecordBean.setStartTime("startTime");
+				scheduleRecordBean.setStartDate(startTime);
 				
 				String endTime = rs.getString("endTime");
-				scheduleRecordBean.setEndTime("endTime");
+				scheduleRecordBean.setStartDate(endTime);
 				
 				String detail = rs.getString("detail");
-				scheduleRecordBean.setDetail("detail");
+				scheduleRecordBean.setDetail(detail);
 				
 				String place = rs.getString("place");
-				scheduleRecordBean.setPlace("place");
+				scheduleRecordBean.setPlace(place);
 				
 //				scheduleInfoBean.add(ScheduleRecordBean);
 				
@@ -76,9 +76,9 @@ public class ScheduleDao extends DaoBase{
 //		
 //	}
 
-	public void getAll(int userId) {
+	public ScheduleInfoBean getAll(int userId) {
 		this.open();
-		String sql = "SELECT * FROM schedule WHERE roomId in (SELECT roomId FROM joins WHERE userId=?)";
+		String sql = "SELECT * FROM schedules WHERE roomId in (SELECT roomId FROM joins WHERE userId=?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
@@ -98,8 +98,12 @@ public class ScheduleDao extends DaoBase{
 
 				infoBean.add(bean);
 			}
+			this.close();
+
+			return infoBean;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 }
