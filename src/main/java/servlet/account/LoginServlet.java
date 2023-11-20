@@ -60,6 +60,8 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("email", email);
 		}
 		
+		request.setAttribute("text", email);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
 		dispatcher.forward(request, response);
 	}
