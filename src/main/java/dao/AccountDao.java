@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import model.UserModel;
+
 public class AccountDao extends DaoBase {
 	public void sample() {
 		this.open();
@@ -23,5 +25,32 @@ public class AccountDao extends DaoBase {
 		}
 
 		this.close();
+	}
+
+	public UserModel login(String email,String password) {
+		open();
+		try {
+			
+			String sql = "SELECT userId, isLogined FROM users WHERE email = ? AND password = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, email);
+			pStmt.setString(2, password);
+			//System.out.println(email + password);
+			
+			ResultSet rs = pStmt.executeQuery();
+			
+			if (rs.next()) {
+				int userId = rs.getInt(1);
+				boolean isLogined = rs.getInt(2) == 0;
+				//System.out.println("a");
+				UserModel user = new UserModel(userId, isLogined);
+				return user;
+			} else { 
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
