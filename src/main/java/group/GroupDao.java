@@ -3,6 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import dao.DaoBase;
+
 public class GroupDao extends DaoBase {
 	private Connection conn;
 	private PreparedStatement pStmt;

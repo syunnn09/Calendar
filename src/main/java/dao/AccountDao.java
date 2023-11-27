@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import bean.AccountBean;
+import bean.AccountInfoBean;
 import model.UserModel;
 
 public class AccountDao extends DaoBase {
@@ -51,6 +53,26 @@ public class AccountDao extends DaoBase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+
+	public void addUser(AccountInfoBean beans) {
+		this.open();
+
+		try {
+			for (AccountBean bean: beans.getAccountRecordArray()) {
+				String sql = "INSERT INTO users(name, email, password, birthday) VALUES(?, ?, ?, ?)";
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, bean.getUserName());
+				ps.setString(2, bean.getEmail());
+				ps.setString(3, bean.getPassword());
+				ps.setString(4, bean.getBirthday());
+				ps.execute();
+			}
+
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }
