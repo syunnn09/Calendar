@@ -18,10 +18,10 @@ public class AddAdminServlet extends HttpServlet {
 	private GroupInfoBean groupInfoBean; 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		
 		try {
 
-			int roomId = Integer.parseInt(request.getParameter("roomId"));
 			int[] userIds=Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
 			
 			HttpSession session = request.getSession();
@@ -32,15 +32,16 @@ public class AddAdminServlet extends HttpServlet {
 			}
 
 		}catch(NumberFormatException e) {
-			System.out.println("失敗");
+			int userId=Integer.parseInt(request.getParameter("insertUserIds"));
+
+			HttpSession session = request.getSession();
+
+			GroupDao gd = new GroupDao();
+			gd.grant(userId, roomId);
+
 		}
 
 		RequestDispatcher dispatcher=request.getRequestDispatcher("WEB-INF/group/addAdmin.jsp");
 		dispatcher.forward(request, response);
 	}
 }
-
-//int[] userIds=Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
-//for(int i=0;i<userId.length;i++) {
-//	System.out.println(userId[i]);
-//}

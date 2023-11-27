@@ -4,6 +4,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import bean.AccountBean;
+import bean.AccountInfoBean;
+import model.UserModel;
+
 public class AccountDao extends DaoBase {
 	public void sample() {
 		this.open();
@@ -25,27 +29,50 @@ public class AccountDao extends DaoBase {
 		this.close();
 	}
 
-	public int login(String email,String password) {
+	public UserModel login(String email,String password) {
 		open();
 		try {
 			
-			String sql = "SELECT id FROM user WHERE email = ? AND password = ?";
+			String sql = "SELECT userId, isLogined FROM users WHERE email = ? AND password = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, email);
 			pStmt.setString(2, password);
+			//System.out.println(email + password);
 			
 			ResultSet rs = pStmt.executeQuery();
 			
 			if (rs.next()) {
 				int userId = rs.getInt(1);
-				return userId;
+				boolean isLogined = rs.getInt(2) == 0;
+				//System.out.println("a");
+				UserModel user = new UserModel(userId, isLogined);
+				return user;
 			} else { 
-				return -1;
+				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
-		
+	}
+
+	public void addUser(AccountInfoBean beans) {
+		this.open();
+
+		try {
+			for (AccountBean bean: beans.getAccountRecordArray()) {
+				String sql = "INSERT INTO users(name, email, password, birthday) VALUES(?, ?, ?, ?)";
+				PreparedStatement ps = conn.prepareStatement(sql);
+				ps.setString(1, bean.getUserName());
+				ps.setString(2, bean.getEmail());
+				ps.setString(3, bean.getPassword());
+				ps.setString(4, bean.getBirthday());
+				ps.execute();
+			}
+
+			conn.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

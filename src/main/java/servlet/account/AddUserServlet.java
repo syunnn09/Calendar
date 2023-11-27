@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import bean.AccountBean;
+import bean.AccountInfoBean;
+import dao.AccountDao;
 
 /**
  * Servlet implementation class AddUserServlet
@@ -43,17 +46,26 @@ public class AddUserServlet extends HttpServlet {
 
 		String line;
 		int i = 0;
+
+		AccountInfoBean beans = new AccountInfoBean();
+
 		while ((line = br.readLine()) != null) {
 			String[] arr = line.split(",");
+			AccountBean bean = new AccountBean(arr);
+			beans.addUserRecord(bean);
 			i += 1;
-			System.out.println(Arrays.toString(arr));
-			if (arr.length != 3) {
+			if (arr.length != 4) {
 				text = i + "行目に問題があります。";
+				request.setAttribute("text", text);
+				doGet(request, response);
+				return;
 			}
 		}
 
-		request.setAttribute("text", text);
+		AccountDao accountDao = new AccountDao();
+		accountDao.addUser(beans);
 
+		request.setAttribute("text", text);
 		doGet(request, response);
 	}
 
