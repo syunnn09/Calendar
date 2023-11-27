@@ -34,5 +34,4 @@ public class SampleServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		doGet(request, response);
 	}
-
 }
