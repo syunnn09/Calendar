@@ -30,7 +30,7 @@ public class kariadmin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		GroupDao gd = new GroupDao();
-//		request.setAttribute("result",gd.select());
+		request.setAttribute("result",gd.adminselect(1));
 		RequestDispatcher dispatcher=request.getRequestDispatcher("WEB-INF/group/addAdmin.jsp");
 		dispatcher.forward(request, response);
 
