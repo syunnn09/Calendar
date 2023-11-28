@@ -2,6 +2,7 @@ package group;
 
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,19 +22,18 @@ public class AddMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		try {
-
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
-			int userId=Integer.parseInt(request.getParameter("insertUserIds"));
-
+			int[] userIds=Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
+			
 			HttpSession session = request.getSession();
-
+			
 			GroupDao gd = new GroupDao();
-			gd.insert(userId, roomId);
-
+			gd.insert(userIds, roomId);
+		
+			request.setAttribute("result",gd.memberselect());
 		}catch(NumberFormatException e) {
 
 		}
-
 		RequestDispatcher dispatcher=request.getRequestDispatcher("WEB-INF/group/addMember.jsp");
 		dispatcher.forward(request, response);
 

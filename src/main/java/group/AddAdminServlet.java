@@ -1,6 +1,7 @@
 package group;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,28 +18,20 @@ public class AddAdminServlet extends HttpServlet {
 	private GroupInfoBean groupInfoBean; 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		try {
-
 			int roomId = Integer.parseInt(request.getParameter("roomId"));
-			int userId=Integer.parseInt(request.getParameter("insertUserIds"));
+			int[] userIds=Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
 
 			HttpSession session = request.getSession();
 
 			GroupDao gd = new GroupDao();
-			gd.grant(userId, roomId);
-
+			gd.grant(userIds, roomId);
+			
+			request.setAttribute("result", gd.adminselect(roomId));
 		}catch(NumberFormatException e) {
-
+			
 		}
-
 		RequestDispatcher dispatcher=request.getRequestDispatcher("WEB-INF/group/addAdmin.jsp");
 		dispatcher.forward(request, response);
 	}
 }
-
-//String[] userIds=request.getParameterValues("insertUserIds");
-//int[] userIds=Stream.of(a).mapToInt(Integer::parseInt).toArray();
-//for(int i=0;i<userId.length;i++) {
-//	System.out.println(userId[i]);
-//}
