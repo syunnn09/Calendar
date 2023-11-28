@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AccountDao;
-
+import model.UserModel;
 
 /**
  * Servlet implementation class LoginServlet
@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/account/login.jsp");
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
     	dispatcher.forward(request, response);
 	}
 
@@ -34,20 +34,35 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		
 		request.setCharacterEncoding("UTF-8");
-		String email  = request.getParameter("userid");
+		String email  = request.getParameter("email");
 		String password = request.getParameter("password");
 		
 		AccountDao ad = new AccountDao();
-		int user = ad.login(email, password);
+		UserModel user = ad.login(email, password);
+		System.out.println(user);
 		
-		if (user == -1) {
+		if (user == null) {
 			request.setAttribute("email", email);
 			this.doGet(request, response);
 			return;
 		}
 
-		session.setAttribute("userId", user);
+		session.setAttribute("userId", user.getUserId());
 		
+		String forwardPath = "";
 		
+		if (!user.isLogined()) {
+			session.setAttribute("user", user);
+			forwardPath = "WEB-INF/account/change.jsp";
+			System.out.println("login:" + user.getUserId());
+		} else {
+			forwardPath = "login.jsp";
+			request.setAttribute("email", email);
+		}
+		
+		request.setAttribute("text", email);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
+		dispatcher.forward(request, response);
 	}
 }
