@@ -88,4 +88,37 @@ public class AccountDao extends DaoBase {
 			return false;
 		}
 	}
+	
+	public void update(AccountBean account) {
+		this.open();
+		String sql = "UPDATE users SET name = ?, password = ? WHERE userId = ?";
+		PreparedStatement ps;
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, account.getUserName());
+			ps.setString(2, account.getPassword());
+			ps.setInt(3, account.getUserId());
+			
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String getName(int userId) {
+		this.open();
+		String sql = "SELECT name FROM users WHERE userId = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getString(1);
+			}
+			return "";
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 }
