@@ -29,22 +29,19 @@ public class AccountDao extends DaoBase {
 		this.close();
 	}
 
-	public UserModel login(String email,String password) {
+	public UserModel login(String email, String password) {
 		open();
 		try {
-			
 			String sql = "SELECT userId, isLogined FROM users WHERE email = ? AND password = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, email);
 			pStmt.setString(2, password);
-			//System.out.println(email + password);
 			
 			ResultSet rs = pStmt.executeQuery();
 			
 			if (rs.next()) {
 				int userId = rs.getInt(1);
-				boolean isLogined = rs.getInt(2) == 0;
-				//System.out.println("a");
+				boolean isLogined = rs.getInt(2) != 0;
 				UserModel user = new UserModel(userId, isLogined);
 				return user;
 			} else { 
@@ -73,6 +70,22 @@ public class AccountDao extends DaoBase {
 			conn.commit();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public boolean changePassword(int userId, String password) {
+		this.open();
+		try {
+			String sql = "UPDATE users SET password = ?, isLogined = 1 WHERE userId = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, password);
+			pStmt.setInt(2, userId);
+			int result = pStmt.executeUpdate();
+			return result > 0;
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 }
