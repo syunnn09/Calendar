@@ -28,9 +28,9 @@ public class ScheduleListServlet extends HttpServlet {
 		ScheduleDao scheduleDao = new ScheduleDao();
 //		ArrayList<ScheduleRecordBean> schedules = scheduleDao.getSchedule(groupId);
 		
-		request.setAttribute("", );
-        request.setAttribute("", );
-        request.setAttribute("", );
+//		request.setAttribute("", );
+//        request.setAttribute("", );
+//        request.setAttribute("", );
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/webapp/scheduleList.jsp");//jspを入れます
 		dispatcher.forward(request, response);
