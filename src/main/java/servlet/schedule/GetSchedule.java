@@ -27,19 +27,26 @@ public class GetSchedule extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
+	    // パラメータからスケジュールIDを取得
+	    int scheduleId = Integer.parseInt(request.getParameter("scheduleId"));
 
-		ScheduleDao dao = new ScheduleDao();
-		ObjectMapper mapper = new ObjectMapper();
+	    // スケジュールDAOのインスタンスを作成
+	    ScheduleDao dao = new ScheduleDao();
+	    // JSONの変換を行うためのObjectMapperのインスタンスを作成
+	    ObjectMapper mapper = new ObjectMapper();
 
-		ScheduleRecordBean recordBean = dao.getSchedule(scheduleId);
-		ScheduleJsonBean bean = new ScheduleJsonBean(recordBean);
+	    // スケジュールIDを使ってデータベースからスケジュール情報を取得
+	    ScheduleRecordBean recordBean = dao.getSchedule(scheduleId);
+	    // 取得した情報をJSON形式に変換するためのビーンクラスのインスタンスを作成
+	    ScheduleJsonBean bean = new ScheduleJsonBean(recordBean);
 
-		try {
-			String json = mapper.writeValueAsString(bean);
-			response.getWriter().write(json);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+	    try {
+	        // JSON形式に変換してレスポンスに書き込み
+	        String json = mapper.writeValueAsString(bean);
+	        response.getWriter().write(json);
+	    } catch (JsonProcessingException e) {
+	        e.printStackTrace();
+	    }
 	}
+
 }
