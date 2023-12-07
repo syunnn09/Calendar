@@ -29,8 +29,6 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		HttpSession session = request.getSession();
 		
 		request.setCharacterEncoding("UTF-8");
@@ -39,7 +37,6 @@ public class LoginServlet extends HttpServlet {
 		
 		AccountDao ad = new AccountDao();
 		UserModel user = ad.login(email, password);
-		System.out.println(user);
 		
 		if (user == null) {
 			request.setAttribute("email", email);
@@ -48,6 +45,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		session.setAttribute("userId", user.getUserId());
+		System.out.println("userId" + session.getAttribute("userId"));
 		
 		String forwardPath = "";
 		
