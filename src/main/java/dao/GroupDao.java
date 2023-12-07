@@ -1,15 +1,13 @@
 package dao;
 
 import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import bean.GroupBean;	
-		
-public class GroupDao extends DaoBase {
-	
+import bean.GroupBean;
+import bean.GroupInfoBean;
 
-	
+public class GroupDao extends DaoBase {
 	//グループ作成
 	
 	public void admin(GroupBean bean) {
@@ -114,17 +112,91 @@ public class GroupDao extends DaoBase {
 			//return true;
 		}
 	 
+	public GroupInfoBean memberselect(int roomId) {
+		try {
+			open();
+			String sql = "SELECT userId, name, email FROM users WHERE NOT EXISTS(SELECT * FROM joins WHERE joins.userId=users.userId AND joins.roomId=?);";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, roomId);
+			ResultSet rs = pStmt.executeQuery();
+			close();
+			GroupInfoBean gib = new GroupInfoBean();
+			while (rs.next()) {
+				GroupBean gb = new GroupBean();
+				gb.setUserId(rs.getInt("userId"));
+				gb.setUserName(rs.getString("name"));
+				gb.setEmail(rs.getString("email"));
+				gb.setRoomId(roomId);
+				gib.addGroup(gb);
+			}
+			return gib;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("memberselect失敗");
+		}
+		return null;
+	}
+
+  	public void insert(int[] userIds, int roomId) {
+		try {
+			open();
+			for (int i = 0; i < userIds.length; i++) {
+				String sql = "Insert Into joins(userId, roomId) values(?, ?)";
+				pStmt = conn.prepareStatement(sql);
+				pStmt.setInt(1, userIds[i]);
+				pStmt.setInt(2, roomId);
+				pStmt.executeUpdate();
+			}
+			close();
+
+		} catch (SQLException e) {
+
+		}
+
+	}
+
+	public void grant(int[] userIds, int roomId) {
+		try {
+			open();
+			String sql = "UPDATE joins SET isAdmin = 0";
+			pStmt = conn.prepareStatement(sql);
+			pStmt.executeUpdate();
+			for (int i = 0; i < userIds.length; i++) {
+				sql = "UPDATE joins SET isAdmin = 1 WHERE userId = ? AND roomId = ? ;";
+				pStmt = conn.prepareStatement(sql);
+				pStmt.setInt(1, userIds[i]);
+				pStmt.setInt(2, roomId);
+				pStmt.executeUpdate();
+			}
+			close();
+
+		} catch (SQLException e) {
+
+		}
+	}
+
+	public GroupInfoBean adminselect(int roomId) {
+		try {
+			open();
+			String sql = "SELECT users.userId, name, email, isAdmin FROM users,joins WHERE users.userId=joins.userId AND roomId=?;";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, roomId);
+			ResultSet rs = pStmt.executeQuery();
+			close();
+			GroupInfoBean gib = new GroupInfoBean();
+			while (rs.next()) {
+				GroupBean gb = new GroupBean();
+				gb.setUserId(rs.getInt("userId"));
+				gb.setUserName(rs.getString("name"));
+				gb.setEmail(rs.getString("email"));
+				gb.setIsAdmin(rs.getInt("isAdmin"));
+				gb.setRoomId(roomId);
+				gib.addGroup(gb);
+			}
+			return gib;
+		} catch (SQLException e) {
+			System.out.println("adminselect失敗");
+		}
+		return null;
+	}
  }
-
-		
-		
-	 
-		
-	
- 
-
-
-
-
-
-
