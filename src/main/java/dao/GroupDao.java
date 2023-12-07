@@ -142,6 +142,7 @@ public class GroupDao extends DaoBase {
 			open();
 			for (int i = 0; i < userIds.length; i++) {
 				String sql = "Insert Into joins(userId, roomId) values(?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(sql);
 				pStmt = conn.prepareStatement(sql);
 				pStmt.setInt(1, userIds[i]);
 				pStmt.setInt(2, roomId);
@@ -159,10 +160,12 @@ public class GroupDao extends DaoBase {
 		try {
 			open();
 			String sql = "UPDATE joins SET isAdmin = 0";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt = conn.prepareStatement(sql);
 			pStmt.executeUpdate();
 			for (int i = 0; i < userIds.length; i++) {
 				sql = "UPDATE joins SET isAdmin = 1 WHERE userId = ? AND roomId = ? ;";
+				pStmt = conn.prepareStatement(sql);
 				pStmt = conn.prepareStatement(sql);
 				pStmt.setInt(1, userIds[i]);
 				pStmt.setInt(2, roomId);
