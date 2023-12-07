@@ -1,59 +1,60 @@
 package bean;
 
-public class GroupBean {
-	private int isAdmin;
-	private int roomId;
-	private String roomName;
-	private int userId;
-	private String userName;
-	private String email;
+import java.io.Serializable;
 
-	public String getEmail() {
-		return email;
+public class GroupBean implements Serializable {
+  private int AdminId;
+  private String roomName; 
+  private int roomId;
+  private int userId;
+  private int joinId;
+
+  public GroupBean() {}
+
+  public GroupBean(int roomId, String roomName) {
+    this.roomId = roomId;
+    this.roomName = roomName;
+  }
+
+  public GroupBean(int roomId,int userId) {
+    this.roomId = roomId;
+    this.userId = userId;
+  }
+
+  public GroupBean(int roomId,int userId,String roomName) {
+    this.userId  =userId;
+    this.roomName=roomName;
+    this.roomId=roomId;
+  }
+
+	public int getAdminID() {
+		return AdminId;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAdminID(int adminID) {
+		AdminId = adminID;
 	}
-
-	public int getIsAdmin() {
-		return isAdmin;
+	public String getRoomname() {
+		return roomName;
 	}
-
-	public void setIsAdmin(int adminId) {
-		this.isAdmin = adminId;
+	public void setRoomname(String roomname) {
+		this.roomName = roomname;
 	}
-
 	public int getRoomId() {
 		return roomId;
 	}
-
 	public void setRoomId(int roomId) {
 		this.roomId = roomId;
 	}
-
-	public String getRoomName() {
-		return roomName;
-	}
-
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
-	}
-
 	public int getUserId() {
 		return userId;
 	}
-
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
-	public String getUserName() {
-		return userName;
+	public int getJoinId() {
+		return joinId;
 	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setJoinId(int joinId) {
+		this.joinId = joinId;
 	}
-
 }
