@@ -54,7 +54,7 @@ public class LoginServlet extends HttpServlet {
 			forwardPath = "WEB-INF/account/change.jsp";
 			System.out.println("login:" + user.getUserId());
 		} else {
-			forwardPath = "login.jsp";
+			forwardPath = "WEB-INF/account/addUser.jsp";
 			request.setAttribute("email", email);
 		}
 		

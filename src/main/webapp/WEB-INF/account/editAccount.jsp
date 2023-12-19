@@ -14,13 +14,13 @@
     <div class="password-change-container">
     	<h1>名前変更</h1>
         <form action="EditAccountServlet" method="post">
-            <input type="name" name="userName" placeholder="名前" value="<%= text %>" required>
-        <h1>パスワード変更</h1>
-            <input type="password" name="password" placeholder="新しいパスワード" required>
-            <input type="password" name="confirmNewPassword" placeholder="新しいパスワードの確認" required>
-            <button type="submit">変更</button>
+            <input type="name" name="userName" placeholder="名前" id="userName" value="<%= text %>" required>
+            <button type="submit" id="button">変更</button>
         </form>
-        
     </div>
 </body>
+<script>
+const userName = document.getElemenById('userName');
+const button = document.getElementById('button');
+</script>
 </html>
