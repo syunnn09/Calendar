@@ -65,4 +65,3 @@ public class GroupBean implements Serializable {
     	 this.joinId = joinId;
      }
 }
-
