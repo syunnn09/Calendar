@@ -60,6 +60,7 @@ public class GroupDao extends DaoBase {
 			System.out.println("!! レコードは追加(INSERT)されませんでした。");
 			e.printStackTrace();
 			return -1;
+		}
 	}
 
 	public void delete(GroupBean bean) {
@@ -84,42 +85,8 @@ public class GroupDao extends DaoBase {
 			System.out.println("!! レコードは削除(DELETE)されていません");
 			e.printStackTrace();
 		}
-
-		System.out.println("!! レコードは正常に追加(INSERT)されました。");
-		//return true;
 	 }
-	 
-	 public void delete(GroupBean bean) {
-			//データベースへ接続
-	     open();
-		 try {
 
-			 //UPDATE文を準備
-			 String sql = "DELETE FROM joins WHERE roomId = ? AND userId = ? ";
-			 PreparedStatement pStmt = conn.prepareStatement(sql);
-				
-			 //UPDATE文の中の「 ? 」に使用する値をセットし、SQLを組み立て
-			 pStmt.setInt(1, bean.getRoomId());
-			 pStmt.setInt(2, bean.getUserId());
-				
-
-				//INSERT文を実行し、実行結果をresultに格納
-				int result = pStmt.executeUpdate();
-
-				//成功すると1が戻るので、1ではないときには失敗
-				if (result != 1) {
-					
-				}
-			} catch (SQLException e) {
-				System.out.println("!! レコードは削除(DELETE)されていません");
-				e.printStackTrace();
-				//return false;
-
-			}
-			System.out.println("!! レコードは正常に削除(DELETE)されました。");
-			//return true;
-		}
-	 
 	public GroupInfoBean memberselect(int roomId) {
 		try {
 			open();
