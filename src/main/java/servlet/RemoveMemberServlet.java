@@ -18,7 +18,6 @@ import dao.GroupDao;
 @WebServlet("/RemoveMemberServlet")
 public class RemoveMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -34,13 +33,8 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 		Dao.delete(bean);
 		
-		//request.setAttribute("bean", bean);
-		
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("GroupCreate.jsp");
-//		dispatcher.forward(request, response);
 		response.sendRedirect("CreatServlet");
 	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
