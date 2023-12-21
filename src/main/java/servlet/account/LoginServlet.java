@@ -37,11 +37,20 @@ public class LoginServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		CommonUtil util = new CommonUtil();
-		password = util.hash(password);
-
 		AccountDao ad = new AccountDao();
-		UserModel user = ad.login(email, password);
 
+		int isLogined = ad.getIsLogined(email);
+		if (isLogined == -1) {
+			request.setAttribute("email", email);
+			this.doGet(request, response);
+			return;
+		}
+
+		if (isLogined != 0) {
+			password = util.hash(password);
+		}
+
+		UserModel user = ad.login(email, password);
 		if (user == null) {
 			request.setAttribute("email", email);
 			this.doGet(request, response);

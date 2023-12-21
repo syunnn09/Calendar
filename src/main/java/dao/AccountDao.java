@@ -121,4 +121,24 @@ public class AccountDao extends DaoBase {
 			return "";
 		}
 	}
+
+	public int getIsLogined(String email) {
+		this.open();
+
+		try {
+			String sql = "SELECT isLogined FROM users WHERE email=?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return -1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 }
