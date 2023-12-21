@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%
-	String text = (String) request.getAttribute("text");
-	text = text != null ? text : "";
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +21,7 @@
 	cursor: pointer;
 }
 </style>
+
 <body>
     <div class="password-change-container">
         <h1>パスワード変更</h1>
@@ -35,31 +32,30 @@
         </form>
     </div>
 </body>
-<script>
 
+<script>
 const newPassword = document.getElementById('newPassword');
 const confirmNewPassword = document.getElementById('confirmNewPassword');
 const button = document.getElementById('button');
 
-newPassword.addEventListener('input', function() {
-	console.log(newPassword.value);
-	if (newPassword.value == confirmNewPassword.value) {
-		console.log("パスワードが一致しています。");
+function onChangePassword() {
+	button.disabled = newPassword.value != confirmNewPassword.value;
+	if (!button.disabled) {
 		button.classList.add('ok');
 	} else {
-		console.log("パスワードが一致していません。");
 		button.classList.remove('ok');
 	}
-	button.disabled = newPassword.value != confirmNewPassword.value;
-});
+}
+
+newPassword.addEventListener('input', onChangePassword);
+confirmNewPassword.addEventListener('input', onChangePassword);
 
 document.changeForm.button.addEventListener('click', async function() {
-	const text = newPassword.value
-    const uint8  = new TextEncoder().encode(text)
-    const digest = await crypto.subtle.digest('SHA-256', uint8)
-    newPassword.value = Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('')
-    document.changeForm.submit()
-})
-
+	const text = newPassword.value;
+    const uint8  = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest('SHA-256', uint8);
+    newPassword.value = Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('');
+    document.changeForm.submit();
+});
 </script>
 </html>

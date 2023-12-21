@@ -30,14 +30,14 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		request.setCharacterEncoding("UTF-8");
 		String email  = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
 		AccountDao ad = new AccountDao();
 		UserModel user = ad.login(email, password);
-		
+
 		if (user == null) {
 			request.setAttribute("email", email);
 			this.doGet(request, response);
@@ -45,21 +45,16 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		session.setAttribute("userId", user.getUserId());
-		System.out.println("userId" + session.getAttribute("userId"));
-		
+		System.out.println("userId: " + session.getAttribute("userId"));
+
 		String forwardPath = "";
-		
+
 		if (!user.isLogined()) {
-			session.setAttribute("user", user);
 			forwardPath = "WEB-INF/account/change.jsp";
-			System.out.println("login:" + user.getUserId());
 		} else {
 			forwardPath = "WEB-INF/account/addUser.jsp";
-			request.setAttribute("email", email);
 		}
-		
-		request.setAttribute("text", email);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
 		dispatcher.forward(request, response);
 	}

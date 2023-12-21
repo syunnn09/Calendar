@@ -19,8 +19,4 @@
         </form>
     </div>
 </body>
-<script>
-const userName = document.getElemenById('userName');
-const button = document.getElementById('button');
-</script>
 </html>
