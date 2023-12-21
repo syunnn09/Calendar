@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.AccountDao;
 import model.UserModel;
+import util.CommonUtil;
 
 /**
  * Servlet implementation class LoginServlet
@@ -32,8 +33,11 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		request.setCharacterEncoding("UTF-8");
-		String email  = request.getParameter("email");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+
+		CommonUtil util = new CommonUtil();
+		password = util.hash(password);
 
 		AccountDao ad = new AccountDao();
 		UserModel user = ad.login(email, password);

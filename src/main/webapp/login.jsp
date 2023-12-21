@@ -21,15 +21,4 @@
         </form>
     </div>
 </body>
-<script>
-const password = document.getElementById('password');
-
-document.loginForm.button.addEventListener('click', async function() {
-	const text = password.value;
-    const uint8  = new TextEncoder().encode(text);
-    const digest = await crypto.subtle.digest('SHA-256', uint8);
-    loginForm.password.value = Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('');
-    document.loginForm.submit();
-});
-</script>
 </html>

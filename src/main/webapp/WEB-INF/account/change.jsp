@@ -39,8 +39,11 @@ const confirmNewPassword = document.getElementById('confirmNewPassword');
 const button = document.getElementById('button');
 
 function onChangePassword() {
-	button.disabled = newPassword.value != confirmNewPassword.value;
-	if (!button.disabled) {
+	let isValid = newPassword.value == confirmNewPassword.value;
+	isValid = isValid && newPassword.value.length != 0;
+
+	button.disabled = !isValid;
+	if (isValid) {
 		button.classList.add('ok');
 	} else {
 		button.classList.remove('ok');
@@ -49,13 +52,5 @@ function onChangePassword() {
 
 newPassword.addEventListener('input', onChangePassword);
 confirmNewPassword.addEventListener('input', onChangePassword);
-
-document.changeForm.button.addEventListener('click', async function() {
-	const text = newPassword.value;
-    const uint8  = new TextEncoder().encode(text);
-    const digest = await crypto.subtle.digest('SHA-256', uint8);
-    newPassword.value = Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('');
-    document.changeForm.submit();
-});
 </script>
 </html>

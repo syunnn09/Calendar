@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import dao.AccountDao;
+import util.CommonUtil;
 
 /**
  * Servlet implementation class ChangeServlet
@@ -33,14 +34,17 @@ public class ChangeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		int userId = (int) session.getAttribute("userId");
 		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		CommonUtil util = new CommonUtil();
+
+		int userId = (int) session.getAttribute("userId");
 		String password = request.getParameter("newPassword");
-		
+		password = util.hash(password);
+
 		AccountDao ad = new AccountDao();
 		boolean isSuccess = ad.changePassword(userId, password);
-		
+
 		if (!isSuccess) {
 			request.setAttribute("text", "パスワード変更に失敗しました。");
 			doGet(request, response);
