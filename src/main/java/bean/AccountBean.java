@@ -26,6 +26,12 @@ public class AccountBean implements Serializable {
 		this.userId = userId;
 		this.password = password;
 	}
+	
+	public AccountBean(String userName, String password, int userId) {
+		this.userName = userName;
+		this.password = password;
+		this.userId = userId;
+	}
 
 	public int getUserId() {
 		return userId;

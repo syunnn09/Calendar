@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import dao.AccountDao;
 import model.UserModel;
+import util.CommonUtil;
 
 /**
  * Servlet implementation class LoginServlet
@@ -30,14 +31,26 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		request.setCharacterEncoding("UTF-8");
-		String email  = request.getParameter("email");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
+		CommonUtil util = new CommonUtil();
 		AccountDao ad = new AccountDao();
+
+		int isLogined = ad.getIsLogined(email);
+		if (isLogined == -1) {
+			request.setAttribute("email", email);
+			this.doGet(request, response);
+			return;
+		}
+
+		if (isLogined != 0) {
+			password = util.hash(password);
+		}
+
 		UserModel user = ad.login(email, password);
-		
 		if (user == null) {
 			request.setAttribute("email", email);
 			this.doGet(request, response);
@@ -45,21 +58,16 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		session.setAttribute("userId", user.getUserId());
-		System.out.println("userId" + session.getAttribute("userId"));
-		
+		System.out.println("userId: " + session.getAttribute("userId"));
+
 		String forwardPath = "";
-		
+
 		if (!user.isLogined()) {
-			session.setAttribute("user", user);
 			forwardPath = "WEB-INF/account/change.jsp";
-			System.out.println("login:" + user.getUserId());
 		} else {
-			forwardPath = "login.jsp";
-			request.setAttribute("email", email);
+			forwardPath = "WEB-INF/account/addUser.jsp";
 		}
-		
-		request.setAttribute("text", email);
-		
+
 		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
 		dispatcher.forward(request, response);
 	}
