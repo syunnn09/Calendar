@@ -19,7 +19,6 @@ import dao.GroupDao;
 @WebServlet("/CreatServlet")
 public class CreatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -35,37 +34,34 @@ public class CreatServlet extends HttpServlet {
 		//文字コードの指定
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-
 		// 値を保存する変数の宣言
-		//int AdminId;
-		String roomName;
-
-		roomName = request.getParameter("roomname");
+		String roomName = request.getParameter("roomname");
 		if (roomName == null || roomName == "") {
 			doGet(request, response);
 			return;
 		}
-		int roomId = Integer.parseInt(request.getParameter("roomid"));
+
 		int userId = (int) session.getAttribute("userId");
-
 		// beanのコンストラクタを使って、値を格納する。
-		GroupBean bean = new GroupBean(roomId, roomName);
-		GroupBean ad = new GroupBean(roomId,userId);
-
+		
+		GroupBean bean = new GroupBean();
+		bean.setUserId(userId);
+		bean.setRoomname(roomName);
 		// Daoを使う準備
 		GroupDao Dao = new GroupDao();
-
 		// DaoのUpdateメソッドを使用(引数：bean)
-		Dao.insert(bean);
-		Dao.admin(ad);
+		int roomId = Dao.insert(bean);
+		
+		GroupBean ad = new GroupBean(userId);
+		ad.setRoomId(roomId);
 
+		Dao.admin(ad);
 		// 【テスト用】beanをスコープに保存
 		request.setAttribute("bean", bean);
-
 		// 【テスト用】beanにちゃんと格納できたか確認するページに飛ぶ。
-		RequestDispatcher dispatcher = request.getRequestDispatcher("");
-		dispatcher.forward(request, response);
-
+		//RequestDispatcher dispatcher = request.getRequestDispatcher("CreatServlet.java");
+		//dispatcher.forward(request, response);
+		response.sendRedirect("CreatServlet");
 	}
 
 }
