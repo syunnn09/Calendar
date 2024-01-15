@@ -7,3 +7,33 @@ body{
 textarea{
 	resize:none;
 }
+table{
+	border: 3px solid #fff;
+	border-collapse: collapse;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+}
+td{
+	text-align: left;
+	border: 3px solid #fff;
+}
+.head{
+	text-align: center;
+	background-color: rgb(128, 255, 255, 0.5);
+}
+.body:nth-of-type(2n+1){
+	background-color: rgb(128, 255, 255, 0.2);
+}
+
+/*button{*/
+/*  text-decoration: none;*/
+/*  font-weight: bold;*/
+/*  font-size: 15px;*/
+/*  color: #799dec;*/
+/*  text-shadow: 0px 2px 1px rgba(0, 0, 0, 0.32), 0px 1px 0px #6182ca, 0px 2px 0px #4f6aa7, 0px 3px 0px #5470ad;*/
+
+/*}*/
+/*button:active {*/
+/*  top: 4px;*/
+/*  text-shadow: none;*/
+/*}*/

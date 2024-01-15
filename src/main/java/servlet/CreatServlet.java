@@ -26,7 +26,7 @@ public class CreatServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		//設定した画面にフォワードする
-		RequestDispatcher dispatcher = request.getRequestDispatcher("GroupCreate.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		dispatcher.forward(request, response);
 	}
 

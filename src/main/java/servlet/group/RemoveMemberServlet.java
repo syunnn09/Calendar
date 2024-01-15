@@ -1,4 +1,4 @@
-package servlet;
+package servlet.group;
 
 import java.io.IOException;
 
@@ -38,7 +38,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 //		RequestDispatcher dispatcher = request.getRequestDispatcher("GroupCreate.jsp");
 //		dispatcher.forward(request, response);
-		response.sendRedirect("CreatServlet");
+		response.sendRedirect("Group");
 	}
 
 	/**

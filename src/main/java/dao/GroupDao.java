@@ -57,7 +57,7 @@ public class GroupDao extends DaoBase {
 			 //INSERT文の中の「?」に使用する値をセットし、SQLを組み立て
 			 //pStmt.setInt(1, groupBean.getUserId());	
 			 pStmt.setInt(1, bean.getRoomId());		
-			 pStmt.setString(2, bean.getRoomname());
+			 pStmt.setString(2, bean.getRoomName());
             //pStmt.setInt(4, groupBean.getAdminID());
 			
 			//ResultSet rs = pStmt.executeQuery();
@@ -112,7 +112,7 @@ public class GroupDao extends DaoBase {
 			//return true;
 		}
 	 
-	public GroupInfoBean memberselect(int roomId) {
+	public GroupInfoBean notmemSelect(int roomId) {
 		try {
 			open();
 			String sql = "SELECT userId, name, email FROM users WHERE NOT EXISTS(SELECT * FROM joins WHERE joins.userId=users.userId AND joins.roomId=?);";
@@ -178,7 +178,7 @@ public class GroupDao extends DaoBase {
 		}
 	}
 
-	public GroupInfoBean adminselect(int roomId) {
+	public GroupInfoBean yesmemSelect(int roomId) {
 		try {
 			open();
 			String sql = "SELECT users.userId, name, email, isAdmin FROM users,joins WHERE users.userId=joins.userId AND roomId=?;";
@@ -202,4 +202,23 @@ public class GroupDao extends DaoBase {
 		}
 		return null;
 	}
- }
+
+	public int adminCheck(int userId, int roomId) {
+		try {
+			open();
+			String sql = "SELECT EXISTS(select userId from joins where userId=? and roomId=? and isAdmin=1)as admin";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, userId);
+			pStmt.setInt(2, roomId);
+			ResultSet rs=pStmt.executeQuery();
+			rs.first();
+			close();
+			return rs.getInt("admin");
+		} catch (SQLException e) {
+			System.out.println("adminCheck失敗");
+		}
+		return 0;
+	}
+	
+
+}

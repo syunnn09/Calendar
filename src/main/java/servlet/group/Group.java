@@ -32,6 +32,12 @@ public class Group extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		int roomId=1;
+		int userId=1;
+		GroupDao gd =new GroupDao();
+		request.setAttribute("result", gd.yesmemSelect(roomId));
+		request.setAttribute("roomId", roomId);
+		request.setAttribute("admin", gd.adminCheck(userId,roomId));		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
 		dispatcher.forward(request, response);
 
@@ -49,11 +55,14 @@ public class Group extends HttpServlet {
 		request.setAttribute("roomId", roomId);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
 		if (value.equals("admin")) {
-			request.setAttribute("result", gd.adminselect(roomId));
+			request.setAttribute("result", gd.yesmemSelect(roomId));
 			dispatcher = request.getRequestDispatcher("WEB-INF/group/addAdmin.jsp");
-		} else if (value.equals("member")) {
-			request.setAttribute("result", gd.memberselect(roomId));
+		} else if (value.equals("addmember")) {
+			request.setAttribute("result", gd.notmemSelect(roomId));
 			dispatcher = request.getRequestDispatcher("WEB-INF/group/addMember.jsp");
+		} else if (value.equals("delmember")) {
+			request.setAttribute("result", gd.yesmemSelect(roomId));
+			dispatcher = request.getRequestDispatcher("WEB-INF/group/r.jsp");			
 		}
 		dispatcher.forward(request, response);
 	}
