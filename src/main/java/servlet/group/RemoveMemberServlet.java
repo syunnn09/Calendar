@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.GroupBean;
 import dao.GroupDao;
@@ -26,9 +25,8 @@ public class RemoveMemberServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		HttpSession session = request.getSession();
-//		int roomId = Integer.parseInt(request.getParameter("roomId"));
-		int userId = (int) session.getAttribute("userId");
+		int roomId = Integer.parseInt(request.getParameter("roomId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 //		
 //		GroupBean bean = new GroupBean(roomId, userId);
 
@@ -37,9 +35,10 @@ public class RemoveMemberServlet extends HttpServlet {
 //		 Dao.delete(bean);
 		
 		//新しく追加した部分
+		request.setAttribute("roomId", roomId);
 		request.setAttribute("userId", userId);
 		request.setAttribute("userName", "hello");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("RemoveMember.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/removeMember.jsp");
 		
 		dispatcher.forward(request, response);
 
@@ -76,7 +75,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 		Dao.delete(bean);
 		
-		response.sendRedirect("CreatServlet");
+		response.sendRedirect("Group");
 		
 		//response.getWriter().println("ok");
 		//RequestDispatcher dispatcher = request.getRequestDispatcher("");

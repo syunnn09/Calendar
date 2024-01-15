@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="bean.ScheduleInfoBean, bean.ScheduleRecordBean, java.util.ArrayList" %>
+<%@ page import="bean.ScheduleInfoBean, bean.ScheduleRecordBean, java.util.ArrayList, bean.GroupInfoBean, bean.GroupBean" %>
 <%
+	String currentGroupId = request.getParameter("groupId");
+	int groupId = currentGroupId != null ? Integer.parseInt(currentGroupId) : 0;
 	ScheduleInfoBean infoBean = (ScheduleInfoBean) request.getAttribute("infoBean");
 	ArrayList<ScheduleRecordBean> record = infoBean.getScheduleRecordArray();
+	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
 %>
 <!DOCTYPE html>
 <html>
@@ -12,6 +15,75 @@
 	<title>Insert title here</title>
 </head>
 <style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.container {
+	display: flex;
+	gap: 1rem;
+}
+.groupContainer {
+	height: 90vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.groupItems {
+	height: 100%;
+	padding: 0 5px;
+	border: 1px solid #000;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.groupItems::-webkit-scrollbar {
+	display: none;
+}
+.groupItem {
+	display: block;
+	width: 60px;
+	height: 60px;
+	margin-top: 0.5rem;
+	border-radius: 50%;
+	border: 1px solid #faf;
+	overflow: hidden;
+	line-height: 60px;
+	text-align: center;
+	font-size: 11px;
+	text-decoration: none;
+}
+.groupItem.current {
+	border-color: #f00;
+}
+.groupItem.plus {
+	text-align: center;
+}
+a.groupItem:hover {
+	text-decoration: underline;
+}
+.headerItems {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid #000;
+	padding-right: 1rem;
+	margin-bottom: 1rem;
+}
+.headerLeft {
+	display: flex;
+}
+.headerItem {
+	padding: 0.3rem 1rem;
+	border-right: 1px solid #000;
+}
+.headerItemText {
+	color: #000;
+	text-decoration: none;
+}
+.headerItemText:hover {
+	text-decoration: underline;
+}
 .header {
 	display: flex;
 	align-items: center;
@@ -46,20 +118,52 @@
 </style>
 
 <body>
-	<div class="header">
-	    <div id="now">
-			<button onclick="now()">今月</button>
+	<div class="container">
+		<div class="groupContainer">
+			<div class="groupItems">
+				<form action="" method="POST">
+					<div class="groupItem plus">+</div>
+				</form>
+				<a href="/Calendar/" class="groupItem<%= groupId == 0 ? " current" : "" %>">
+					<p>マイページ</p>
+				</a>
+				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
+					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>">
+						<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
+					</a>
+				<% } %>
+			</div>
 		</div>
-		<div id="prev">
-			<button onclick="prev()">先月</button>
+		<div class="calendarMain">
+			<div class="headerItems">
+				<div class="headerLeft">
+					<div class="headerItem">
+						<a href="" class="headerItemText">カレンダー</a>
+					</div>
+					<div class="headerItem">
+						<a href="" class="headerItemText">チャット</a>
+					</div>
+				</div>
+				<div>
+					<a href="GroupManagement" class="headerItemText">&#x2699;</a>
+				</div>
+			</div>
+			<div class="header">
+			    <div id="now">
+					<button onclick="now()">今月</button>
+				</div>
+				<div id="prev">
+					<button onclick="prev()">先月</button>
+				</div>
+				<div id="date"></div>
+				<div id="next">
+					<button onclick="next()">翌月</button>
+				</div>
+			</div>
+			<div class="calendarContainer">
+				<div id="calendar"></div>
+			</div>
 		</div>
-		<div id="date"></div>
-		<div id="next">
-			<button onclick="next()">翌月</button>
-		</div>
-	</div>
-	<div class="calendarContainer">
-		<div id="calendar"></div>
 	</div>
 </body>
 
