@@ -5,6 +5,102 @@
 	box-sizing: border-box;
 }
 
+.container {
+	display: flex;
+	gap: 1rem;
+}
+
+.groupContainer {
+	height: 90vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.groupItems {
+	height: 100%;
+	padding: 0 5px;
+	border: 1px solid #000;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.groupItems::-webkit-scrollbar {
+	display: none;
+}
+
+.groupItem {
+	display: block;
+	width: 60px;
+	height: 60px;
+	margin-top: 0.5rem;
+	border-radius: 50%;
+	border: 1px solid #faf;
+	overflow: hidden;
+	line-height: 60px;
+	text-align: center;
+	font-size: 11px;
+	text-decoration: none;
+	color: #00f;
+}
+
+.groupItem.current {
+	border-color: #f00;
+}
+
+.groupItem.plus {
+	text-align: center;
+}
+
+a.groupItem:hover {
+	text-decoration: underline;
+}
+
+.headerItems {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid #000;
+	padding-right: 1rem;
+	margin-bottom: 1rem;
+}
+
+.headerLeft {
+	display: flex;
+}
+
+.headerItem {
+	padding: 0.3rem 1rem;
+	border-right: 1px solid #000;
+}
+
+.headerItemText {
+	color: #000;
+	text-decoration: none;
+}
+
+.headerItemText:hover {
+	text-decoration: underline;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.today {
+	background-color: #faf;
+}
+
+.calendarContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .frame {
 	display: flex;
 	justify-content: center;
@@ -13,7 +109,7 @@
 
 #chat {
 	width: 90vw;
-	height: 90vh;
+	height: 80vh;
 	border: 1px solid #000;
 }
 
@@ -22,6 +118,7 @@
 	width: 90vw;
 	text-align: right;
 }
+
 .else {
 	padding-left: 1rem;
 	width: 90vw;

@@ -14,6 +14,7 @@ import bean.GroupInfoBean;
 import bean.ScheduleInfoBean;
 import dao.GroupDao;
 import dao.ScheduleDao;
+import util.CommonUtil;
 
 /**
  * Servlet implementation class TopServlet
@@ -26,10 +27,13 @@ public class TopServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+		if (!CommonUtil.checkLogin(request, response)) {
+			return;
+		}
+
+		HttpSession session = request.getSession();		
 		int userId = (int) session.getAttribute("userId");
 		String groupId = (String) request.getParameter("groupId");
-		System.out.println("groupId: " + groupId);
 
 		ScheduleDao scheduleDao = new ScheduleDao();
 		GroupDao groupDao = new GroupDao();

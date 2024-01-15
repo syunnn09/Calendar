@@ -52,6 +52,7 @@
 	text-align: center;
 	font-size: 11px;
 	text-decoration: none;
+	color: #00f;
 }
 .groupItem.current {
 	border-color: #f00;
@@ -113,7 +114,12 @@ a.groupItem:hover {
 }
 .daySpan {
 	font-size: 13px;
-	opacity: 0.6;
+	opacity: 0.5;
+	cursor: pointer;
+	user-select: none;
+}
+.daySpan:hover {
+	opacity: 1;
 }
 </style>
 
@@ -124,7 +130,7 @@ a.groupItem:hover {
 				<form action="" method="POST">
 					<div class="groupItem plus">+</div>
 				</form>
-				<a href="/Calendar/" class="groupItem<%= groupId == 0 ? " current" : "" %>">
+				<a href="top" class="groupItem<%= groupId == 0 ? " current" : "" %>">
 					<p>マイページ</p>
 				</a>
 				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
@@ -140,9 +146,11 @@ a.groupItem:hover {
 					<div class="headerItem">
 						<a href="" class="headerItemText">カレンダー</a>
 					</div>
-					<div class="headerItem">
-						<a href="chat" class="headerItemText">チャット</a>
-					</div>
+					<% if (groupId != 0) { %>
+						<div class="headerItem">
+							<a href="chat?groupId=<%= groupId %>" class="headerItemText">チャット</a>
+						</div>
+					<% } %>
 				</div>
 				<div>
 					<a href="GroupManagement" class="headerItemText">&#x2699;</a>
