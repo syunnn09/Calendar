@@ -23,7 +23,7 @@
 			<%
 			for (int i = 0; i < gib.getArraySize(); i++) {
 			%>
-			<tr>
+			<tr class="body">
 				<td><input type="checkbox" name="insertUserIds"
 					value="<%=groupArray.get(i).getUserId()%>"></td>
 				<td><%=groupArray.get(i).getUserId()%></td>
@@ -37,7 +37,7 @@
 			}
 			%>
 		</table>
-		<input type="submit" value="追加">
+			<button type="submit">追加</button>
 	</form>
 
 </body>

@@ -68,6 +68,7 @@ public class GroupDao extends DaoBase {
 		}
 	 }
 
+
 	public GroupInfoBean memberselect(int roomId) {
 		try {
 			open();
@@ -134,7 +135,7 @@ public class GroupDao extends DaoBase {
 		}
 	}
 
-	public GroupInfoBean adminselect(int roomId) {
+	public GroupInfoBean yesmemSelect(int roomId) {
 		try {
 			open();
 			String sql = "SELECT users.userId, name, email, isAdmin FROM users,joins WHERE users.userId=joins.userId AND roomId=?;";
@@ -158,4 +159,23 @@ public class GroupDao extends DaoBase {
 		}
 		return null;
 	}
- }
+
+	public int adminCheck(int userId, int roomId) {
+		try {
+			open();
+			String sql = "SELECT EXISTS(select userId from joins where userId=? and roomId=? and isAdmin=1)as admin";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, userId);
+			pStmt.setInt(2, roomId);
+			ResultSet rs=pStmt.executeQuery();
+			rs.first();
+			close();
+			return rs.getInt("admin");
+		} catch (SQLException e) {
+			System.out.println("adminCheck失敗");
+		}
+		return 0;
+	}
+	
+
+}

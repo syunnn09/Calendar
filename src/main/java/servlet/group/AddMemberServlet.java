@@ -3,7 +3,6 @@ package servlet.group;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,13 +28,14 @@ public class AddMemberServlet extends HttpServlet {
 			GroupDao gd = new GroupDao();
 			gd.insert(userIds, roomId);
 
-			request.setAttribute("result", gd.memberselect(roomId));
+			request.setAttribute("result", gd.notmemSelect(roomId));
 			request.setAttribute("roomId", roomId);
 		} catch (Exception e) {
 
 		}
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
-		dispatcher.forward(request, response);
+//		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
+//		dispatcher.forward(request, response);
+		response.sendRedirect("Group");
 
 	}
 
