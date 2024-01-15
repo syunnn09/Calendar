@@ -25,14 +25,14 @@ public class GroupBean implements Serializable {
 	 }
 	 
 	 public GroupBean(int roomId,int userId) {
-		  this.roomId=roomId;
+		  this.roomId = roomId;
 		  this.userId = userId;
 	 }
 	  
 	 public GroupBean(int roomId,int userId,String roomName) {
-		  this.userId  =userId;
-		  this.roomName=roomName;
-		  this.roomId=roomId;
+		  this.userId  = userId;
+		  this.roomName = roomName;
+		  this.roomId = roomId;
 	 }
 	  
 	 public int getAdminID() {
