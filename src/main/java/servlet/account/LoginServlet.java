@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 
 		UserModel user = ad.login(email, password);
 		if (user == null) {
-			request.setAttribute("email", email);
+			request.setAttribute("text", email);
 			this.doGet(request, response);
 			return;
 		}
