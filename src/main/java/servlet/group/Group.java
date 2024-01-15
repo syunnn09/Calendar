@@ -14,17 +14,9 @@ import dao.GroupDao;
 /**
  * Servlet implementation class kari
  */
-@WebServlet("/Group")
+@WebServlet("/GroupManagement")
 public class Group extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public Group() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)

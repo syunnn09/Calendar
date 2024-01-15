@@ -69,7 +69,7 @@ public class GroupDao extends DaoBase {
 	 }
 
 
-	public GroupInfoBean memberselect(int roomId) {
+	public GroupInfoBean notmemSelect(int roomId) {
 		try {
 			open();
 			String sql = "SELECT userId, name, email FROM users WHERE NOT EXISTS(SELECT * FROM joins WHERE joins.userId=users.userId AND joins.roomId=?);";
@@ -176,6 +176,29 @@ public class GroupDao extends DaoBase {
 		}
 		return 0;
 	}
-	
+
+	public GroupInfoBean getAllGroup(int userId) {
+		try {
+			open();
+			String sql = "SELECT roomId, roomName FROM room WHERE roomId IN (SELECT roomId FROM joins WHERE userId = ?)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			GroupInfoBean groupInfoBean = new GroupInfoBean();
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				GroupBean bean = new GroupBean();
+				int roomId = rs.getInt(1);
+				String roomName = rs.getString(2);
+				bean.setRoomId(roomId);
+				bean.setRoomname(roomName);
+				groupInfoBean.addGroup(bean);
+			}
+			close();
+			return groupInfoBean;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 }
