@@ -65,7 +65,8 @@ public class LoginServlet extends HttpServlet {
 		if (!user.isLogined()) {
 			forwardPath = "WEB-INF/account/change.jsp";
 		} else {
-			forwardPath = "WEB-INF/account/addUser.jsp";
+			response.sendRedirect("TopServlet");
+			return;
 		}
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
