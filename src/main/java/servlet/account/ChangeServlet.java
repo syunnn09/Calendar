@@ -50,7 +50,6 @@ public class ChangeServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/schedule/top.jsp");
-		dispatcher.forward(request, response);
+		response.sendRedirect("TopServlet");
 	}
 }
