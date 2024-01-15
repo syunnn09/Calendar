@@ -4,29 +4,34 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.AccountBean;
 import dao.AccountDao;
-import util.CommonUtil;
 
 /**
- * Servlet implementation class ChangeServlet
+ * Servlet implementation class EditAccountServlet
  */
-@WebServlet("/ChangeServlet")
-@MultipartConfig(maxFileSize=1048576)
-public class ChangeServlet extends HttpServlet {
+@WebServlet("/EditAccountServlet")
+public class EditAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/account/change.jsp");
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		int userId = (int) session.getAttribute("userId"); 
+		AccountDao accountDao = new AccountDao();
+		String name = accountDao.getName(userId);
+		
+		request.setAttribute("userName",name);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/account/editAccount.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -34,22 +39,20 @@ public class ChangeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		// TODO Auto-generated method stub
+		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
-		CommonUtil util = new CommonUtil();
-
+		
+		String password = request.getParameter("password");
+		String name = request.getParameter("userName");
 		int userId = (int) session.getAttribute("userId");
-		String password = request.getParameter("newPassword");
-		password = util.hash(password);
-
-		AccountDao ad = new AccountDao();
-		boolean isSuccess = ad.changePassword(userId, password);
-
-		if (!isSuccess) {
-			request.setAttribute("text", "パスワード変更に失敗しました。");
-			doGet(request, response);
-			return;
-		}
-		response.sendRedirect("TopServlet");
+		
+		AccountBean bean = new AccountBean();
+		bean.setUserName(name);
+		bean.setPassword(password);
+		bean.setUserId(userId);
+		
+		AccountDao accountDao = new AccountDao();
+		accountDao.update(bean);
 	}
 }

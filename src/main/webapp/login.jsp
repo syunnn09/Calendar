@@ -14,10 +14,10 @@
 <body>
     <div class="login-container">
         <h1>LOGIN</h1>
-        <form action="LoginServlet" method="post">
-            <input type="text" name="email" placeholder="user name" value="<%= text %>"  required>
-            <input type="password" name="password" placeholder="password" required>
-            <button type="submit">login</button>
+        <form action="LoginServlet" name="loginForm" method="post">
+            <input type="text" name="email" placeholder="user name" value="<%= text %>" required>
+            <input type="password" name="password" id="password" placeholder="password" required>
+            <button name="button">login</button>
         </form>
     </div>
 </body>
