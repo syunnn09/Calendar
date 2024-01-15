@@ -2,14 +2,12 @@ package servlet;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 //import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import bean.GroupBean;
 import dao.GroupDao;
@@ -26,24 +24,16 @@ public class RemoveMemberServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		HttpSession session = request.getSession();
-//		int roomId = Integer.parseInt(request.getParameter("roomId"));
-		int userId = (int) session.getAttribute("userId");
-//		
-//		GroupBean bean = new GroupBean(roomId, userId);
-
-//		GroupDao Dao = new GroupDao();
+		int roomId = Integer.parseInt(request.getParameter("roomId"));
+		int userId = Integer.parseInt(request.getParameter("userId"));
 		
-//		 Dao.delete(bean);
+		GroupBean bean = new GroupBean(roomId, userId);
 		
-		//新しく追加した部分
-		request.setAttribute("userId", userId);
-		request.setAttribute("userName", "hello");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("RemoveMember.jsp");
+		GroupDao Dao = new GroupDao();
 		
-		dispatcher.forward(request, response);
+		Dao.delete(bean);
 		
-//		response.sendRedirect("CreatServlet");
+		response.sendRedirect("CreatServlet");
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -66,19 +56,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 		//request.setAttribute("bean", bean);
 		
-		
-		int roomId = Integer.parseInt(request.getParameter("roomId"));
-		int userId = Integer.parseInt(request.getParameter("userId"));
-		
-		GroupBean bean = new GroupBean(roomId, userId);
-		
-		GroupDao Dao = new GroupDao();
-		
-		Dao.delete(bean);
-		
-		response.sendRedirect("CreatServlet");
-		
-		//response.getWriter().println("ok");
+		response.getWriter().println("ok");
 		//RequestDispatcher dispatcher = request.getRequestDispatcher("");
 		//dispatcher.forward(request, response);
 	}
