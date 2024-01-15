@@ -15,18 +15,16 @@
 	<div class="box_con">
 		<form action="CreatServlet" method="post" name="mail_form">
 			<tableclass "formTable">
-	<!-- スクリプト -->
+
 	<script type="text/javascript">
-	function clickEvent() {
-		if(mail_form.roomname.value==""){
-			//名前が未入力の場合
-			alert("グループ名を入力してください");    //エラーメッセージを出力
-                    return false;    //送信ボタン本来の動作をキャンセル
-		}else{	
-			//エラーがない場合
-			return true;//送信される
-		}
-	}
+		function clickEvent() {
+			if(mail_form.roomname.value==""){
+				alert("グループ名を入力してください");
+				return false;
+			}else{
+				return true;
+			}
+	 	}
 	</script>
 		<tr>
 			<th>グループ名<span></span></th>
