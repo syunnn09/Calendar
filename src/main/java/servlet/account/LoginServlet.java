@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
 		if (!user.isLogined()) {
 			forwardPath = "WEB-INF/account/change.jsp";
 		} else {
-			response.sendRedirect("/Calendar");
+			response.sendRedirect("top");
 			return;
 		}
 

@@ -18,7 +18,7 @@ import dao.ScheduleDao;
 /**
  * Servlet implementation class TopServlet
  */
-@WebServlet("/")
+@WebServlet("/top")
 public class TopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -141,7 +141,7 @@ a.groupItem:hover {
 						<a href="" class="headerItemText">カレンダー</a>
 					</div>
 					<div class="headerItem">
-						<a href="" class="headerItemText">チャット</a>
+						<a href="chat" class="headerItemText">チャット</a>
 					</div>
 				</div>
 				<div>

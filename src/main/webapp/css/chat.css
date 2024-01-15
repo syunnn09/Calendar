@@ -1,0 +1,29 @@
+@charset "UTF-8";
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.frame {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#chat {
+	width: 90vw;
+	height: 90vh;
+	border: 1px solid #000;
+}
+
+.mine {
+	padding-right: 1rem;
+	width: 90vw;
+	text-align: right;
+}
+.else {
+	padding-left: 1rem;
+	width: 90vw;
+	text-align: left;
+}
