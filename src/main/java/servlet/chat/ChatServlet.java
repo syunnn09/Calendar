@@ -1,4 +1,4 @@
-package servlet.schedule;
+package servlet.chat;
 
 import java.io.IOException;
 
@@ -11,16 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.GroupInfoBean;
-import bean.ScheduleInfoBean;
 import dao.GroupDao;
-import dao.ScheduleDao;
 import util.CommonUtil;
 
 /**
- * Servlet implementation class TopServlet
+ * Servlet implementation class ChatServlet
  */
-@WebServlet("/top")
-public class TopServlet extends HttpServlet {
+@WebServlet("/chat")
+public class ChatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -31,24 +29,13 @@ public class TopServlet extends HttpServlet {
 			return;
 		}
 
-		HttpSession session = request.getSession();		
-		int userId = (int) session.getAttribute("userId");
-		String groupId = (String) request.getParameter("groupId");
-
-		ScheduleDao scheduleDao = new ScheduleDao();
+		HttpSession session = request.getSession();
 		GroupDao groupDao = new GroupDao();
-		ScheduleInfoBean infoBean;
 
-		if (groupId != null) {
-			infoBean = scheduleDao.getScheduleArray(Integer.parseInt(groupId));
-		} else {
-			infoBean = scheduleDao.getAll(userId);
-		}
-
+		int userId = (int) session.getAttribute("userId");
 		GroupInfoBean bean = groupDao.getAllGroup(userId);
-		request.setAttribute("infoBean", infoBean);
 		request.setAttribute("groupListBean", bean);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/schedule/top.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/chat/chat.jsp");
 		dispatcher.forward(request, response);
 	}
 

@@ -1,10 +1,15 @@
 package util;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HexFormat;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class CommonUtil {
 	public String hash(String value) {
@@ -35,5 +40,19 @@ public class CommonUtil {
 
 	public String generatePassword() {
 		return generatePassword(7);
+	}
+
+	public static boolean checkLogin(HttpServletRequest req, HttpServletResponse res) {
+		HttpSession session = req.getSession();
+		Object user = session.getAttribute("userId");
+		if (user == null) {
+			try {
+				res.sendRedirect("LoginServlet");
+				return false;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 }

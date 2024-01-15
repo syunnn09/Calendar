@@ -50,6 +50,6 @@ public class ChangeServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		response.sendRedirect("TopServlet");
+		response.sendRedirect("top");
 	}
 }

@@ -42,7 +42,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 		dispatcher.forward(request, response);
 
-		response.sendRedirect("Group");
+//		response.sendRedirect("GroupManagement");
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -75,7 +75,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		
 		Dao.delete(bean);
 		
-		response.sendRedirect("Group");
+		response.sendRedirect("GroupManagement");
 		
 		//response.getWriter().println("ok");
 		//RequestDispatcher dispatcher = request.getRequestDispatcher("");
