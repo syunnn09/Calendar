@@ -121,6 +121,52 @@ a.groupItem:hover {
 .daySpan:hover {
 	opacity: 1;
 }
+#popupBase {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #6663;
+	display: none;
+	z-index: 9999;
+}
+.open {
+	display: block !important;
+	// transition-duration: 1s;
+}
+#closePopup {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 2rem;
+	height: 2rem;
+	cursor: pointer;
+}
+#popupMain {
+	display: none;
+	background-color: #fff;
+	position: absolute;
+	top: calc(50% - 100px);
+	left: calc(50% - 230px);
+	width: 460px;
+	height: 200px;
+	padding: 10rem;
+	z-index: 10000;
+	border-radius: 5px;
+}
+.popupInner {
+	position: absolute;
+	top: 2rem;
+	left: 2rem;
+}
+button {
+	border: 1px solid #000;
+	border-radius: 5px;
+	padding: 0 10px;
+	background-color: #fff;
+	cursor: pointer;
+}
 </style>
 
 <body>
@@ -173,6 +219,37 @@ a.groupItem:hover {
 			</div>
 		</div>
 	</div>
+	<div id="popupBase"></div>
+	<div id="popupMain">
+		<button onclick="closePopup()" id="closePopup">x</button>
+		<div class="popupInner">
+			<form action="CreateScheduleServlet" method="post" name="createScheduleForm">
+				<input type="hidden" name="groupId" value="<%= groupId %>">
+				<table align="center">
+					<tr>
+						<td>タイトル</td>
+						<td><input type="text" name="title"></td>
+					</tr>
+					<tr>
+					<tr>
+					<td>日時</td>
+						<td><input type="date" name="startDate" name="startDate">
+						～ <input type="date" name="endDate"></td>
+					</tr>
+					<tr>
+						<td>詳細</td>
+						<td><textarea name="detail"></textarea></td>
+					</tr>
+					<tr>
+						<td>場所</td>
+						<td><input type="textarea" name="place"></td>
+					</tr>
+				</table>
+				<input type="submit"value="作成">
+			</form>
+		</div>
+	</div>
+	<button onclick="openPopup()">オープン</button>
 </body>
 
 <script>
@@ -244,11 +321,6 @@ const getCalendar = () => {
 			if (count > lastDay) {
 				overCount += 1;
 				el.innerHTML = '';
-				if (overCount == 1) {
-					// el.innerHTML = (month + 2) + '/' + overCount;
-				} else {
-					// el.innerHTML = overCount;
-				}
 			}
 			if (currentYear == year && currentMonth == month && count == day) {
 				el.classList.add('today');
@@ -270,6 +342,11 @@ const getCalendar = () => {
 
 	calendar.appendChild(table);
 	qs('date').innerHTML = year + '年 ' + (month+1) + '月';
+	Array.from(document.getElementsByClassName('daySpan')).forEach(el => {
+		el.addEventListener('click', () => {
+			openPopup(el.innerHTML);
+		});
+	});
 }
 
 const now = () => {
@@ -326,6 +403,26 @@ for (d of days) {
 	tr.appendChild(el);
 }
 table.appendChild(tr)
+
+const openPopup = (day) => {
+	const popup = qs('popupBase');
+	qs('popupMain').classList.add('open');
+	popup.classList.add('open');
+	popup.addEventListener('click', closePopup);
+	if (day) {
+		const dispMonth = ('0' + (month + 1)).slice(-2);
+		const dispDay = ('0' + day).slice(-2);
+		document.createScheduleForm.startDate.value = '' + year + '-' + dispMonth + '-' + dispDay;
+	} else {
+		document.createScheduleForm.startDate.value = null;
+	}
+}
+
+const closePopup = () => {
+	const popup = qs('popupBase');
+	qs('popupMain').classList.remove('open');
+	popup.classList.remove('open');
+}
 
 getCalendar();
 
