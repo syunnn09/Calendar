@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DaoBase {
-	private final String JDBC_URL = "jdbc:mariadb://localhost:54321/calendar?characterEncoding=UTF-8&serverTimezone=JST";
+	private final String JDBC_URL = "jdbc:mariadb://localhost:3306/calendar?characterEncoding=UTF-8&serverTimezone=JST";
 	private final String USER = "root";
-	private final String PASS = "password";
+	private final String PASS = "mysql";
 
 	public Connection conn = null;
 
