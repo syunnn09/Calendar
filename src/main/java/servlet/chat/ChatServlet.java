@@ -28,6 +28,11 @@ public class ChatServlet extends HttpServlet {
 		if (!CommonUtil.checkLogin(request, response)) {
 			return;
 		}
+		String group = request.getParameter("groupId");
+		if (group == null) {
+			response.sendRedirect("top");
+			return;
+		}
 
 		HttpSession session = request.getSession();
 		GroupDao groupDao = new GroupDao();

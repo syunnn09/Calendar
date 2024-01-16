@@ -31,7 +31,13 @@ public class CreateScheduleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("WEB-INF/schedule/createScheduleServlet.jsp").forward(request, response);
+		String redirectPath = "top";
+		String roomIdStr = request.getParameter("roomId");
+		int roomId = roomIdStr != null ? Integer.parseInt(roomIdStr) : 0;
+		if (roomId != 0) {
+			redirectPath += "?groupId=" + roomId;
+		}
+		response.sendRedirect(redirectPath);
 	}
 
 	/**
@@ -40,12 +46,12 @@ public class CreateScheduleServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		srb.setTitle(request.getParameter("title"));
-		srb.setRoomId(Integer.parseInt(request.getParameter("roomId")));
+		srb.setRoomId(Integer.parseInt(request.getParameter("groupId")));
 		srb.setStartDate(request.getParameter("startDate"));
 		srb.setEndDate(request.getParameter("endDate"));
 		srb.setDetail(request.getParameter("detail"));
 		srb.setPlace(request.getParameter("place"));
-		ScheduleDao sd =new ScheduleDao();
+		ScheduleDao sd = new ScheduleDao();
 		sd.createSchedule(srb);
 		doGet(request, response);
 	}
