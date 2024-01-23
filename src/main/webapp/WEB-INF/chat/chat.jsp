@@ -1,16 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="bean.GroupInfoBean, bean.GroupBean" %>
+<%@ page import="bean.GroupInfoBean, bean.GroupBean, bean.ChatInfoBean, bean.ChatBean, javax.servlet.http.HttpSession" %>
 <%
 	int groupId = Integer.parseInt(request.getParameter("groupId"));
+	int userId = (int) session.getAttribute("userId");
 	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
+	GroupBean currentGroup = groupListBean.get(groupId);
+	ChatInfoBean chatBean = (ChatInfoBean) request.getAttribute("chat");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="css/chat.css">
-	<title>Insert title here</title>
+	<title>チャット - <%= currentGroup.getRoomname() %></title>
 </head>
 <body>
 	<div class="container">
@@ -46,14 +49,22 @@
 				</div>
 			</div>
 			<div class="frame">
-				<div id="chat"></div>
+				<div id="chat">
+					<% for (ChatBean chat : chatBean.getChatArray()) { %>
+						<p><%= chat.getUserName() %> : <%= chat.getMessage() %>
+					<% } %>
+				</div>
 			</div>
-			<input type="text" id="msg">
+			<textarea type="text" id="msg"></textarea>
 			<button onclick="sendMsg()">送信</button>
 		</div>
 	</div>
 </body>
 <script>
+	var page = 0;
+	var isLoading = false;
+	var chat = document.getElementById('chat');
+
 	var wsUrl;
 	if (window.location.protocol == 'http:') {
 		wsUrl = 'ws://';
@@ -61,18 +72,16 @@
 		wsUrl = 'wss://';
 	}
 
-	var ws = new WebSocket(wsUrl + window.location.host + '/Calendar/chat/echo/<%= groupId %>');
+	var ws = new WebSocket(wsUrl + window.location.host + '/Calendar/chat/echo/<%= groupId %>?userId=<%= userId %>&mail=34');
 
 	ws.onmessage = function(event) {
 		var elem = document.createElement('div');
-		var chat = document.getElementById('chat');
 
 		var data = JSON.parse(event.data);
-		console.log(data)
-		elem.innerHTML = data.message;
+		elem.innerHTML = data.name + ' : ' + data.message;
 
-		elem.classList.add(data.isMine ? "mine" : "else");
 		chat.appendChild(elem);
+		scrollToBottom();
 	}
 
 	function sendMsg() {
@@ -80,8 +89,39 @@
 		var message = msg.value;
 		if (message) {
 			ws.send(message);
+			msg.value = '';
 		}
-		msg.value = '';
 	}
+
+	function scrollToBottom() {
+		chat.scrollTop = chat.scrollHeight;
+	}
+	scrollToBottom();
+
+	function convertData(data) {
+		console.log(data);
+		if (data.size == 0) return;
+
+		for (chatContent of data.chatArray) {
+			chat.innerHTML = chatContent.userName + ' : ' + chatContent.message + '<br>' + chat.innerHTML;
+		}
+		isLoading = false;
+	}
+
+	async function getData() {
+		await fetch("http://localhost:8080/Calendar/api/getChat?page=" + page + "&roomId=<%= groupId %>", {method: 'POST'})
+			.then(res => res.json())
+			.then(data => convertData(data));
+	}
+
+	chat.addEventListener('scroll', (e) => {
+		if (isLoading) return;
+
+		if (chat.scrollTop == 0) {
+			page += 1;
+			isLoading = true;
+			getData();
+		}
+	});
 </script>
 </html>

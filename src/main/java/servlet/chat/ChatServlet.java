@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.ChatInfoBean;
 import bean.GroupInfoBean;
+import dao.ChatDao;
 import dao.GroupDao;
 import util.CommonUtil;
 
@@ -38,8 +40,13 @@ public class ChatServlet extends HttpServlet {
 		GroupDao groupDao = new GroupDao();
 
 		int userId = (int) session.getAttribute("userId");
+		int roomId = Integer.parseInt(group);
+
+		ChatDao chatDao = new ChatDao();
+		ChatInfoBean chatBean = chatDao.getChat(roomId, 0);
 		GroupInfoBean bean = groupDao.getAllGroup(userId);
 		request.setAttribute("groupListBean", bean);
+		request.setAttribute("chat", chatBean);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/chat/chat.jsp");
 		dispatcher.forward(request, response);
 	}

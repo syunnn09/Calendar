@@ -24,7 +24,8 @@ public class Chat {
 
 	@OnMessage
 	public void onMessage(@PathParam("roomId") String roomId, String message, Session userSession) {
-		manager.onMessage(roomId, userSession, message);
+		String queryString = userSession.getQueryString();
+		manager.onMessage(roomId, userSession, message, queryString);
 	}
 
 	@OnError

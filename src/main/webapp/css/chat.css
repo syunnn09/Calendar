@@ -111,6 +111,9 @@ a.groupItem:hover {
 	width: 90vw;
 	height: 80vh;
 	border: 1px solid #000;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	overflow-wrap: break-word;
 }
 
 .mine {
