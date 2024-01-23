@@ -25,4 +25,13 @@ public class GroupInfoBean {
 	public void setGroupArray(ArrayList<GroupBean> groupArray) {
 		this.groupArray = groupArray;
 	}
+
+	public GroupBean get(int roomId) {
+		for (GroupBean bean: this.groupArray) {
+			if (bean.getRoomId() == roomId) {
+				return bean;
+			}
+		}
+		return null;
+	}
 }
