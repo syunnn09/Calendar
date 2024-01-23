@@ -20,6 +20,9 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+table {
+	border-collapse: collapse;
+}
 .container {
 	display: flex;
 	gap: 1rem;
@@ -46,13 +49,14 @@
 	height: 60px;
 	margin-top: 0.5rem;
 	border-radius: 50%;
-	border: 1px solid #faf;
+	border: 1px solid #000;
 	overflow: hidden;
 	line-height: 60px;
 	text-align: center;
 	font-size: 11px;
 	text-decoration: none;
 	color: #00f;
+	cursor: pointer;
 }
 .groupItem.current {
 	border-color: #f00;
@@ -133,7 +137,6 @@ a.groupItem:hover {
 }
 .open {
 	display: block !important;
-	// transition-duration: 1s;
 }
 #closePopup {
 	position: absolute;
@@ -143,15 +146,14 @@ a.groupItem:hover {
 	height: 2rem;
 	cursor: pointer;
 }
-#popupMain {
+.popup {
 	display: none;
 	background-color: #fff;
 	position: absolute;
-	top: calc(50% - 100px);
+	top: calc(50% - 150px);
 	left: calc(50% - 230px);
 	width: 460px;
 	height: 200px;
-	padding: 10rem;
 	z-index: 10000;
 	border-radius: 5px;
 }
@@ -167,6 +169,22 @@ button {
 	background-color: #fff;
 	cursor: pointer;
 }
+.addPopupHeader {
+	position: absolute;
+	top: 1rem;
+	left: 0;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.addPopupInner {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 </style>
 
 <body>
@@ -174,13 +192,13 @@ button {
 		<div class="groupContainer">
 			<div class="groupItems">
 				<form action="" method="POST">
-					<div class="groupItem plus">+</div>
+					<div class="groupItem plus" id="addGroup">+</div>
 				</form>
 				<a href="top" class="groupItem<%= groupId == 0 ? " current" : "" %>">
 					<p>マイページ</p>
 				</a>
 				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
-					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>">
+					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
 						<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
 					</a>
 				<% } %>
@@ -220,7 +238,7 @@ button {
 		</div>
 	</div>
 	<div id="popupBase"></div>
-	<div id="popupMain">
+	<div id="popupMain" class="popup">
 		<button onclick="closePopup()" id="closePopup">x</button>
 		<div class="popupInner">
 			<form action="CreateScheduleServlet" method="post" name="createScheduleForm">
@@ -247,6 +265,28 @@ button {
 				</table>
 				<input type="submit"value="作成">
 			</form>
+		</div>
+	</div>
+	<div id="addPopup" class="popup">
+		<div class="addPopupHeader">
+			<p>グループ作成</p>
+		</div>
+		<div class="addPopupInner">
+			<div class="addPopupMain">
+				<form action="CreatServlet" method="POST">
+					<table border="0">
+						<tr>
+							<td>グループ名</td>
+							<td><input type="text" name="roomname"></td>
+						</tr>
+						<tr>
+							<td>色</td>
+							<td><input type="color" name="color"></td>
+						</tr>
+					</table>
+					<input type="submit" value="作成">
+				</form>
+			</div>
 		</div>
 	</div>
 	<button onclick="openPopup()">オープン</button>
@@ -421,8 +461,17 @@ const openPopup = (day) => {
 const closePopup = () => {
 	const popup = qs('popupBase');
 	qs('popupMain').classList.remove('open');
+	qs('addPopup').classList.remove('open');
 	popup.classList.remove('open');
 }
+
+const addGroup = qs('addGroup');
+addGroup.addEventListener('click', function() {
+	const popup = qs('popupBase');
+	popup.classList.add('open');
+	popup.addEventListener('click', closePopup);
+	qs('addPopup').classList.add('open');
+});
 
 getCalendar();
 

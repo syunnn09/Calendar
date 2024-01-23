@@ -11,10 +11,17 @@ public class GroupBean implements Serializable {
       private String userName;
       private String Email;
       private int IsAdmin;
+      private String color;
       
-	 public GroupBean(int roomId, String roomName) { 
+	 public GroupBean(int roomId, String roomName) {
 		  this.roomId = roomId;
 		  this.roomName = roomName;
+	 }
+
+	 public GroupBean(int roomId, String roomName, String color) {
+		 this.roomId = roomId;
+		 this.roomName = roomName;
+		 this.color = color;
 	 }
 	  
 	 public GroupBean() {
@@ -90,5 +97,13 @@ public class GroupBean implements Serializable {
 
 	public void setIsAdmin(int isAdmin) {
 		IsAdmin = isAdmin;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 }
