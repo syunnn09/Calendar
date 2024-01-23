@@ -32,11 +32,12 @@ public class CreateScheduleServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String redirectPath = "top";
-		String roomIdStr = request.getParameter("roomId");
+		String roomIdStr = request.getParameter("groupId");
 		int roomId = roomIdStr != null ? Integer.parseInt(roomIdStr) : 0;
 		if (roomId != 0) {
 			redirectPath += "?groupId=" + roomId;
 		}
+		System.out.println(redirectPath);
 		response.sendRedirect(redirectPath);
 	}
 

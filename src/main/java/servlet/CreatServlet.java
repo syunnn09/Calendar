@@ -36,6 +36,7 @@ public class CreatServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		// 値を保存する変数の宣言
 		String roomName = request.getParameter("roomname");
+		String color = request.getParameter("color");
 		if (roomName == null || roomName == "") {
 			doGet(request, response);
 			return;
@@ -47,21 +48,21 @@ public class CreatServlet extends HttpServlet {
 		GroupBean bean = new GroupBean();
 		bean.setUserId(userId);
 		bean.setRoomname(roomName);
+		bean.setColor(color);
 		// Daoを使う準備
 		GroupDao Dao = new GroupDao();
 		// DaoのUpdateメソッドを使用(引数：bean)
 		int roomId = Dao.insert(bean);
 		
-		GroupBean ad = new GroupBean(userId);
-		ad.setRoomId(roomId);
+		bean.setRoomId(roomId);
 
-		Dao.admin(ad);
+		Dao.admin(bean);
 		// 【テスト用】beanをスコープに保存
 		request.setAttribute("bean", bean);
 		// 【テスト用】beanにちゃんと格納できたか確認するページに飛ぶ。
 		//RequestDispatcher dispatcher = request.getRequestDispatcher("CreatServlet.java");
 		//dispatcher.forward(request, response);
-		response.sendRedirect("CreatServlet");
+		response.sendRedirect("top");
 	}
 
 }

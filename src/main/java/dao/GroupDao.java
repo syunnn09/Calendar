@@ -32,10 +32,11 @@ public class GroupDao extends DaoBase {
 		open();
 		try {
 			//INSERT文を準備
-			String sql = "INSERT INTO room(roomName) VALUES (?)";
+			String sql = "INSERT INTO room(roomName, color) VALUES (?, ?)";
 			PreparedStatement pStmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			//INSERT文の中の「?」に使用する値をセットし、SQLを組み立て
 			pStmt.setString(1, bean.getRoomname());
+			pStmt.setString(2, bean.getColor());
 			pStmt.executeQuery();
 			ResultSet rs = pStmt.getGeneratedKeys();
 			int roomId = -1;
@@ -180,7 +181,7 @@ public class GroupDao extends DaoBase {
 	public GroupInfoBean getAllGroup(int userId) {
 		try {
 			open();
-			String sql = "SELECT roomId, roomName FROM room WHERE roomId IN (SELECT roomId FROM joins WHERE userId = ?)";
+			String sql = "SELECT roomId, roomName, color FROM room WHERE roomId IN (SELECT roomId FROM joins WHERE userId = ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
 			GroupInfoBean groupInfoBean = new GroupInfoBean();
@@ -189,8 +190,10 @@ public class GroupDao extends DaoBase {
 				GroupBean bean = new GroupBean();
 				int roomId = rs.getInt(1);
 				String roomName = rs.getString(2);
+				String color = rs.getString(3);
 				bean.setRoomId(roomId);
 				bean.setRoomname(roomName);
+				bean.setColor(color);
 				groupInfoBean.addGroup(bean);
 			}
 			close();
