@@ -97,7 +97,7 @@ a.groupItem:hover {
 	margin-bottom: 1rem;
 }
 .today {
-	background-color: #faf;
+	/* background-color: #faf; */
 }
 .calendarContainer {
 	display: flex;
@@ -114,7 +114,9 @@ a.groupItem:hover {
 .day {
 	height: 100%;
 	display: flex;
+	align-items: center;
 	flex-direction: column;
+	gap: 1px;
 }
 .daySpan {
 	font-size: 13px;
@@ -124,6 +126,16 @@ a.groupItem:hover {
 }
 .daySpan:hover {
 	opacity: 1;
+}
+.schedule {
+	background-color: #6661;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+	text-align: left;
+	border-left: 5px solid var(--color);
+	width: 100%;
 }
 #popupBase {
 	position: absolute;
@@ -138,7 +150,7 @@ a.groupItem:hover {
 .open {
 	display: block !important;
 }
-#closePopup {
+.closePopup {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -239,7 +251,7 @@ button {
 	</div>
 	<div id="popupBase"></div>
 	<div id="popupMain" class="popup">
-		<button onclick="closePopup()" id="closePopup">x</button>
+		<button onclick="closePopup()" class="closePopup">x</button>
 		<div class="popupInner">
 			<form action="CreateScheduleServlet" method="post" name="createScheduleForm">
 				<input type="hidden" name="groupId" value="<%= groupId %>">
@@ -272,6 +284,7 @@ button {
 			<p>グループ作成</p>
 		</div>
 		<div class="addPopupInner">
+		<button onclick="closePopup()" class="closePopup">x</button>
 			<div class="addPopupMain">
 				<form action="CreatServlet" method="POST">
 					<table border="0">
@@ -369,7 +382,8 @@ const getCalendar = () => {
 			for (let d of datam) {
 				let scheduleEl = ce('div');
 				scheduleEl.classList.add('schedule');
-				scheduleEl.innerHTML = d;
+				scheduleEl.innerHTML = d.title;
+				scheduleEl.style.setProperty('--color', d.color);
 				dayEl.appendChild(scheduleEl);
 				calendarElements.push(scheduleEl);
 			}
@@ -428,7 +442,8 @@ let data = {}
 	if (!data[startYear][startMonth][startDay]) {
 		data[startYear][startMonth][startDay] = [];
 	}
-	data[startYear][startMonth][startDay].push('<%= bean.getTitle() %>');
+	var data_json = { title: '<%= bean.getTitle() %>', color: '<%= bean.getColor() %>' };
+	data[startYear][startMonth][startDay].push(data_json);
 <% } %>
 
 const days = ['日', '月', '火', '水', '木', '金', '土'];

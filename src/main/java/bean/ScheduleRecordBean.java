@@ -10,6 +10,7 @@ public class ScheduleRecordBean implements Serializable{
 	private String title;
 	private String detail;
 	private String place;
+	private String color;
 
 	public ScheduleRecordBean() {}
 	public void setScheduleId(int scheduleId) {
@@ -59,5 +60,11 @@ public class ScheduleRecordBean implements Serializable{
 	@Override
 	public String toString() {
 		return this.title;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 }
