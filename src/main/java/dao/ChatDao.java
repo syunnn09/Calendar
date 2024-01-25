@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import bean.ChatBean;
 import bean.ChatInfoBean;
+import bean.ScheduleRecordBean;
 
 public class ChatDao extends DaoBase {
 	private static final int PAGE_CONTENTS_COUNT = 30;
@@ -39,6 +40,7 @@ public class ChatDao extends DaoBase {
 					infoBean.prepend(bean);
 				}
 			}
+			this.close();
 			return infoBean;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -57,6 +59,7 @@ public class ChatDao extends DaoBase {
 			ps.setString(4, time);
 			
 			ps.executeUpdate();
+			this.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,6 +75,7 @@ public class ChatDao extends DaoBase {
 			ps.setString(3, bean.getMessage());
 			ps.setString(4, bean.getTimestamp());
 			int result = ps.executeUpdate();
+			this.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -84,6 +88,7 @@ public class ChatDao extends DaoBase {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
 			ResultSet rs = ps.executeQuery();
+			this.close();
 			if (rs.next()) {
 				return rs.getString(1);
 			}
@@ -91,5 +96,19 @@ public class ChatDao extends DaoBase {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void createSystemMessage(ScheduleRecordBean bean, String message) {
+		try {
+			this.open();
+			String sql = "INSERT INTO chat(roomId, userId, message) VALUES(?, 0, ?)";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, bean.getRoomId());
+			ps.setString(2, message);
+			ps.executeUpdate();
+			this.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

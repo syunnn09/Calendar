@@ -112,6 +112,7 @@ a.groupItem:hover {
 	height: 6rem;
 }
 .day {
+	width: 100%;
 	height: 100%;
 	display: flex;
 	align-items: center;
@@ -128,14 +129,14 @@ a.groupItem:hover {
 	opacity: 1;
 }
 .schedule {
-	background-color: #6661;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	white-space: nowrap;
-	text-align: left;
+	background-color: #eee;
+	display: block;
+	text-align: center;
 	border-left: 5px solid var(--color);
 	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 #popupBase {
 	position: absolute;
@@ -360,7 +361,6 @@ const getCalendar = () => {
 			let daySpan = ce('span');
 			daySpan.classList.add('daySpan');
 			count += 1;
-			daySpan.innerHTML = count;
 			dayEl.appendChild(daySpan);
 			el.appendChild(dayEl);
 			if (!isCompleted) {
@@ -371,6 +371,7 @@ const getCalendar = () => {
 					isCompleted = true;
 				}
 			}
+			daySpan.innerHTML = count;
 			if (count > lastDay) {
 				overCount += 1;
 				el.innerHTML = '';

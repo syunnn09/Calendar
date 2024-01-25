@@ -26,6 +26,12 @@ public class ChatBean implements Serializable {
 		this.userName = userName;
 	}
 
+	public ChatBean(int room, int userId, String message) {
+		this.roomId = room;
+		this.userId = userId;
+		this.message = message;
+	}
+
 	public ChatBean() { }
 
 	public int getChatId() {

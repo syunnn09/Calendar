@@ -17,6 +17,8 @@ public class ChatSessionManager {
 	LocalDateTime now;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD HH:mm:ss");
 	ChatDao chatDao = new ChatDao();
+	private final int SYSTEM_USER_ID = 0;
+	private final String SYSTEM_USER_NAME = "SYSTEM";
 
 	public static ChatSessionManager getManager() {
 		if (manager == null) {
@@ -57,21 +59,38 @@ public class ChatSessionManager {
 		session.remove(curSession);
 	}
 
+	public void sendMessage(ChatBean chat) {
+		now = LocalDateTime.now();
+		String nowstr = dtf.format(now);
+		chat.setTimestamp(nowstr);
+		String userName = chatDao.getUserName(chat.getUserId());
+		chatDao.insert(chat);
+
+		String message = chat.getMessage();
+		List<Session> session = sessions.get(String.valueOf(chat.getRoomId()));
+		if (session == null) return;
+		for (Session userSession : session) {
+			userSession.getAsyncRemote().sendText("{\"message\": \"" + message + "\", \"name\": \"" + userName + "\"}");
+		}
+	}
+
 	public void onMessage(String roomId, Session user, String message, String queryString) {
 		Map<String, String> queryMap = getQueryMap(queryString);
 		int userId = Integer.parseInt(queryMap.get("userId"));
 		message = message.replace("\n", "<br>");
 
-		now = LocalDateTime.now();
-		String nowstr = dtf.format(now);
-		String userName = chatDao.getUserName(userId);
 		int room = Integer.parseInt(roomId);
-		ChatBean chat = new ChatBean(room, userId, message, nowstr, userName);
-		chatDao.insert(chat);
-		List<Session> session = sessions.get(roomId);
-		for (Session userSession : session) {
-			userSession.getAsyncRemote().sendText("{\"message\": \"" + message + "\", \"name\": \"" + userName + "\"}");
-		}
+		ChatBean chat = new ChatBean(room, userId, message);
+		this.sendMessage(chat);
+	}
+
+	public void sendSystemMessage(int roomId, String message) {
+		ChatBean chat = new ChatBean();
+		chat.setRoomId(roomId);
+		chat.setUserId(SYSTEM_USER_ID);
+		chat.setUserName(SYSTEM_USER_NAME);
+		chat.setMessage(message);
+		this.sendMessage(chat);
 	}
 
 }

@@ -37,7 +37,6 @@ public class CreateScheduleServlet extends HttpServlet {
 		if (roomId != 0) {
 			redirectPath += "?groupId=" + roomId;
 		}
-		System.out.println(redirectPath);
 		response.sendRedirect(redirectPath);
 	}
 
