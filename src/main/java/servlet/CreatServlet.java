@@ -61,7 +61,7 @@ public class CreatServlet extends HttpServlet {
 		// 【テスト用】beanにちゃんと格納できたか確認するページに飛ぶ。
 		//RequestDispatcher dispatcher = request.getRequestDispatcher("CreatServlet.java");
 		//dispatcher.forward(request, response);
-		response.sendRedirect("CreatServlet");
+		response.sendRedirect("top");
 	}
 
 }

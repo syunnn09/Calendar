@@ -18,7 +18,7 @@
 			ArrayList<GroupBean> groupArray = gib.getGroupArray();
 			int roomId = groupArray.get(0).getRoomId();
 		%>
-		ルームID:<%=roomId%><br> <input type="hidden" name="roomId" value="<%=roomId%>">
+		ルームID:<%=roomId%><br> <input type="hidden" name=roomId value="<%=roomId%>">
 		<table align="center">
 			<%
 			for (int i = 0; i < gib.getArraySize(); i++) {
