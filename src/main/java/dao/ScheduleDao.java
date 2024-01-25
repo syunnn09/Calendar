@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import bean.ScheduleInfoBean;
 import bean.ScheduleRecordBean;
+import servlet.chat.ChatSessionManager;
 
 public class ScheduleDao extends DaoBase {
 	ChatDao chatDao = new ChatDao();
@@ -119,7 +120,7 @@ public class ScheduleDao extends DaoBase {
 			pStmt.executeUpdate();
 			close();
 			String message = "[予定: " + srb.getTitle() + " が作成されました。]";
-			chatDao.createSystemMessage(srb, message);
+			ChatSessionManager.getManager().sendSystemMessage(srb.getRoomId(), message);
 		} catch (SQLException e) {
 
 		}
