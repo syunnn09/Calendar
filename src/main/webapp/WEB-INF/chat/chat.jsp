@@ -20,13 +20,13 @@
 		<div class="groupContainer">
 			<div class="groupItems">
 				<form action="" method="POST">
-					<div class="groupItem plus">+</div>
+					<div class="groupItem plus" id="addGroup">+</div>
 				</form>
 				<a href="top" class="groupItem<%= groupId == 0 ? " current" : "" %>">
 					<p>マイページ</p>
 				</a>
 				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
-					<a href="chat?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>">
+					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
 						<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
 					</a>
 				<% } %>
@@ -45,7 +45,7 @@
 					<% } %>
 				</div>
 				<div>
-					<a href="GroupManagement" class="headerItemText">&#x2699;</a>
+					<a href="Group?gruopId=<%= groupId %>" class="headerItemText">&#x2699;</a>
 				</div>
 			</div>
 			<div class="frame">
@@ -59,8 +59,34 @@
 			<button onclick="sendMsg()">送信</button>
 		</div>
 	</div>
+	<div id="popupBase"></div>
+	<div id="addPopup" class="popup">
+		<div class="addPopupHeader">
+			<p>グループ作成</p>
+		</div>
+		<div class="addPopupInner">
+		<button onclick="closePopup()" class="closePopup">x</button>
+			<div class="addPopupMain">
+				<form action="CreatServlet" method="POST">
+					<table border="0">
+						<tr>
+							<td>グループ名</td>
+							<td><input type="text" name="roomname"></td>
+						</tr>
+						<tr>
+							<td>色</td>
+							<td><input type="color" name="color"></td>
+						</tr>
+					</table>
+					<input type="submit" value="作成">
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 <script>
+	const qs = (q) => document.getElementById(q);
+	const ce = (q) => document.createElement(q);
 	var page = 0;
 	var isLoading = false;
 	var chat = document.getElementById('chat');
@@ -122,6 +148,19 @@
 			isLoading = true;
 			getData();
 		}
+	});
+
+	const closePopup = () => {
+		qs('popupBase').classList.remove('open');
+		qs('addPopup').classList.remove('open');
+	}
+
+	const addGroup = qs('addGroup');
+	addGroup.addEventListener('click', function() {
+		const popup = qs('popupBase');
+		popup.classList.add('open');
+		popup.addEventListener('click', closePopup);
+		qs('addPopup').classList.add('open');
 	});
 </script>
 </html>
