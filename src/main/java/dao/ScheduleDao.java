@@ -8,6 +8,7 @@ import bean.ScheduleInfoBean;
 import bean.ScheduleRecordBean;
 
 public class ScheduleDao extends DaoBase {
+	ChatDao chatDao = new ChatDao();
 	//データベースに接続する情報
 	public ScheduleInfoBean getScheduleArray(int groupId){
 		open();
@@ -117,7 +118,8 @@ public class ScheduleDao extends DaoBase {
 			pStmt.setString(6, srb.getPlace());
 			pStmt.executeUpdate();
 			close();
-
+			String message = "[予定: " + srb.getTitle() + " が作成されました。]";
+			chatDao.createSystemMessage(srb, message);
 		} catch (SQLException e) {
 
 		}
