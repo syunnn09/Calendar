@@ -14,7 +14,7 @@ public class ScheduleDao extends DaoBase {
 		
 		try {
 			//スケジュールを取得する時のSQL文
-			String spl = "SELECT * FROM schedules WHERE roomId = ?";
+			String spl = "SELECT *, color FROM schedules INNER JOIN room ON schedules.roomId = room.roomId WHERE schedules.roomId = ?";
 			PreparedStatement pStmt = conn.prepareStatement(spl);
 			pStmt.setInt(1, groupId);
 			
@@ -32,6 +32,7 @@ public class ScheduleDao extends DaoBase {
 				bean.setEndDate(rs.getString("endDate"));
 				bean.setPlace(rs.getString("place"));
 				bean.setDetail(rs.getString("detail"));
+				bean.setColor(rs.getString("color"));
 				
 				scheduleInfoBean.add(bean);
 			}
@@ -45,7 +46,7 @@ public class ScheduleDao extends DaoBase {
 
 	public ScheduleRecordBean getSchedule(int scheduleId) {
 		this.open();
-		String sql = "SELECT * FROM schedules WHERE scheduleId = ?";
+		String sql = "SELECT *, color FROM schedules INNER JOIN room ON schedules.roomId = room.roomId WHERE scheduleId = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, scheduleId);
@@ -61,6 +62,7 @@ public class ScheduleDao extends DaoBase {
 				bean.setEndDate(rs.getString("endDate"));
 				bean.setPlace(rs.getString("place"));
 				bean.setDetail(rs.getString("detail"));
+				bean.setColor(rs.getString("color"));
 			}
 			return bean;
 		} catch (SQLException e) {
@@ -71,7 +73,7 @@ public class ScheduleDao extends DaoBase {
 
 	public ScheduleInfoBean getAll(int userId) {
 		this.open();
-		String sql = "SELECT * FROM schedules WHERE roomId in (SELECT roomId FROM joins WHERE userId=?)";
+		String sql = "SELECT *, color FROM schedules INNER JOIN room ON schedules.roomId = room.roomId WHERE schedules.roomId in (SELECT roomId FROM joins WHERE userId=?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
@@ -88,6 +90,7 @@ public class ScheduleDao extends DaoBase {
 				bean.setEndDate(rs.getString("endDate"));
 				bean.setPlace(rs.getString("place"));
 				bean.setDetail(rs.getString("detail"));
+				bean.setColor(rs.getString("color"));
 
 				infoBean.add(bean);
 			}
