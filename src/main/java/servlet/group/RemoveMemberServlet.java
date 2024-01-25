@@ -27,12 +27,6 @@ public class RemoveMemberServlet extends HttpServlet {
 
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
-//		
-//		GroupBean bean = new GroupBean(roomId, userId);
-
-//		GroupDao Dao = new GroupDao();
-		
-//		 Dao.delete(bean);
 		
 		//新しく追加した部分
 		request.setAttribute("roomId", roomId);
@@ -41,31 +35,13 @@ public class RemoveMemberServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/removeMember.jsp");
 		
 		dispatcher.forward(request, response);
-
-//		response.sendRedirect("GroupManagement");
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//request.setCharacterEncoding("UTF-8");
-		
-		//int roomId;
-		//int userId;
-		
-		//roomId = Integer.parseInt(request.getParameter("roomid"));
-		//userId = Integer.parseInt(request.getParameter("userid"));
-		
-		//GroupBean bean= new GroupBean(roomId, userId);
-		
-		//GroupDao Dao= new GroupDao();
-		
-		//Dao.delete(bean);
-		
-		//request.setAttribute("bean", bean);
-		
-		
+
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		
@@ -74,12 +50,7 @@ public class RemoveMemberServlet extends HttpServlet {
 		GroupDao Dao = new GroupDao();
 		
 		Dao.delete(bean);
-		
-		response.sendRedirect("GroupManagement");
-		
-		//response.getWriter().println("ok");
-		//RequestDispatcher dispatcher = request.getRequestDispatcher("");
-		//dispatcher.forward(request, response);
+		response.sendRedirect("Group?groupId=" + roomId);
 	}
 
 }

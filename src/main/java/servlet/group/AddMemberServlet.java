@@ -19,8 +19,8 @@ public class AddMemberServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		try {
-			int roomId = Integer.parseInt(request.getParameter("roomId"));
 			int[] userIds = Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
 
 			HttpSession session = request.getSession();
@@ -35,7 +35,7 @@ public class AddMemberServlet extends HttpServlet {
 		}
 //		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
 //		dispatcher.forward(request, response);
-		response.sendRedirect("Group");
+		response.sendRedirect("Group?groupId=" + roomId);
 
 	}
 

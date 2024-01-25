@@ -229,7 +229,7 @@ button {
 					<% } %>
 				</div>
 				<div>
-					<a href="GroupManagement" class="headerItemText">&#x2699;</a>
+					<a href="Group?groupId=<%= groupId %>" class="headerItemText">&#x2699;</a>
 				</div>
 			</div>
 			<div class="header">
