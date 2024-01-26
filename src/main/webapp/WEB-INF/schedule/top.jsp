@@ -264,7 +264,7 @@ button {
 					<tr>
 					<tr>
 					<td>日時</td>
-						<td><input type="date" name="startDate" name="startDate">
+						<td><input type="date" name="startDate">
 						～ <input type="date" name="endDate"></td>
 					</tr>
 					<tr>
@@ -468,9 +468,12 @@ const openPopup = (day) => {
 	if (day) {
 		const dispMonth = ('0' + (month + 1)).slice(-2);
 		const dispDay = ('0' + day).slice(-2);
-		document.createScheduleForm.startDate.value = '' + year + '-' + dispMonth + '-' + dispDay;
+		const dispYMD = '' + year + '-' + dispMonth + '-' + dispDay;
+		document.createScheduleForm.startDate.value = dispYMD;
+		document.createScheduleForm.endDate.value = dispYMD;
 	} else {
 		document.createScheduleForm.startDate.value = null;
+		document.createScheduleFrm.endDate.value = null;
 	}
 }
 
