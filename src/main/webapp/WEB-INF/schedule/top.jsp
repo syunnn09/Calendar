@@ -7,12 +7,17 @@
 	ScheduleInfoBean infoBean = (ScheduleInfoBean) request.getAttribute("infoBean");
 	ArrayList<ScheduleRecordBean> record = infoBean.getScheduleRecordArray();
 	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
+	GroupBean currentGroup = groupListBean.get(groupId);
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<% if (currentGroup != null) { %>
+	<title>カレンダー - <%= currentGroup.getRoomname() %></title>
+	<% } else { %>
+		<title>カレンダー - マイページ</title>
+	<% } %>
 </head>
 <style>
 * {
@@ -198,6 +203,9 @@ button {
 	justify-content: center;
 	align-items: center;
 }
+.addPopupLeft {
+	padding-right: 1rem;
+}
 </style>
 
 <body>
@@ -230,7 +238,9 @@ button {
 					<% } %>
 				</div>
 				<div>
-					<a href="Group?groupId=<%= groupId %>" class="headerItemText">&#x2699;</a>
+					<% if (groupId != 0) { %>
+						<a href="Group?groupId=<%= groupId %>" class="headerItemText">&#x2699;</a>
+					<% } %>
 				</div>
 			</div>
 			<div class="header">
@@ -255,24 +265,35 @@ button {
 		<button onclick="closePopup()" class="closePopup">x</button>
 		<div class="popupInner">
 			<form action="CreateScheduleServlet" method="post" name="createScheduleForm">
-				<input type="hidden" name="groupId" value="<%= groupId %>">
 				<table align="center">
 					<tr>
-						<td>タイトル</td>
-						<td><input type="text" name="title"></td>
+						<td class="addPopupLeft">タイトル</td>
+						<td><input type="text" name="title" required></td>
 					</tr>
 					<tr>
-					<tr>
-					<td>日時</td>
-						<td><input type="date" name="startDate" name="startDate">
-						～ <input type="date" name="endDate"></td>
+						<td class="addPopupLeft">グループ</td>
+						<td>
+							<select name="groupId">
+								<% for (GroupBean group: groupListBean.getGroupArray()) { %>
+									<option value="<%= group.getRoomId() %>"<%= group.getRoomId() == groupId ? " selected" : "" %>><%= group.getRoomname() %></option>
+								<% } %>
+							</select>
+						</td>
 					</tr>
 					<tr>
-						<td>詳細</td>
+						<td class="addPopupLeft">日時</td>
+						<td>
+							<input type="date" name="startDate" required>
+							～
+							<input type="date" name="endDate" required>
+						</td>
+					</tr>
+					<tr>
+						<td class="addPopupLeft">詳細</td>
 						<td><textarea name="detail"></textarea></td>
 					</tr>
 					<tr>
-						<td>場所</td>
+						<td class="addPopupLeft">場所</td>
 						<td><input type="textarea" name="place"></td>
 					</tr>
 				</table>
@@ -291,7 +312,7 @@ button {
 					<table border="0">
 						<tr>
 							<td>グループ名</td>
-							<td><input type="text" name="roomname"></td>
+							<td><input type="text" name="roomname" required></td>
 						</tr>
 						<tr>
 							<td>色</td>
@@ -468,9 +489,12 @@ const openPopup = (day) => {
 	if (day) {
 		const dispMonth = ('0' + (month + 1)).slice(-2);
 		const dispDay = ('0' + day).slice(-2);
-		document.createScheduleForm.startDate.value = '' + year + '-' + dispMonth + '-' + dispDay;
+		const dispYMD = '' + year + '-' + dispMonth + '-' + dispDay;
+		document.createScheduleForm.startDate.value = dispYMD;
+		document.createScheduleForm.endDate.value = dispYMD;
 	} else {
 		document.createScheduleForm.startDate.value = null;
+		document.createScheduleForm.endDate.value = null;
 	}
 }
 
