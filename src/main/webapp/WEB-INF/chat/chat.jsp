@@ -126,12 +126,14 @@
 
 	function convertData(data) {
 		console.log(data);
+		var prevHeight = chat.scrollHeight;
 		if (data.size == 0) return;
 
 		for (chatContent of data.chatArray) {
 			chat.innerHTML = chatContent.userName + ' : ' + chatContent.message + '<br>' + chat.innerHTML;
 		}
 		isLoading = false;
+		chat.scrollTop = chat.scrollHeight - prevHeight;
 	}
 
 	async function getData() {
