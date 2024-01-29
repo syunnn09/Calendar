@@ -11,13 +11,13 @@ import javax.websocket.Session;
 
 import bean.ChatBean;
 import dao.ChatDao;
+import util.Consts;
 
 public class ChatSessionManager {
 	static ChatSessionManager manager;
 	LocalDateTime now;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD HH:mm:ss");
 	ChatDao chatDao = new ChatDao();
-	private final int SYSTEM_USER_ID = 0;
 	private final String SYSTEM_USER_NAME = "SYSTEM";
 
 	public static ChatSessionManager getManager() {
@@ -87,7 +87,7 @@ public class ChatSessionManager {
 	public void sendSystemMessage(int roomId, String message) {
 		ChatBean chat = new ChatBean();
 		chat.setRoomId(roomId);
-		chat.setUserId(SYSTEM_USER_ID);
+		chat.setUserId(Consts.SYSTEM_USER_ID);
 		chat.setUserName(SYSTEM_USER_NAME);
 		chat.setMessage(message);
 		this.sendMessage(chat);
