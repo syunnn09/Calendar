@@ -324,7 +324,7 @@ button {
 			</div>
 		</div>
 	</div>
-	<button onclick="openPopup()">オープン</button>
+	<a href="logout">ログアウト</a>
 </body>
 
 <script>
