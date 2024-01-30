@@ -41,6 +41,7 @@ public class GetSchedule extends HttpServlet {
 	    ScheduleJsonBean bean = new ScheduleJsonBean(recordBean);
 
 	    try {
+			response.setCharacterEncoding("utf-8");
 	        // JSON形式に変換してレスポンスに書き込み
 	        String json = mapper.writeValueAsString(bean);
 	        response.getWriter().write(json);
