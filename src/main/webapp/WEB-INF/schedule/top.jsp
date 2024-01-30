@@ -8,13 +8,14 @@
 	ArrayList<ScheduleRecordBean> record = infoBean.getScheduleRecordArray();
 	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
 	GroupBean currentGroup = groupListBean.get(groupId);
+	String color = currentGroup != null ? currentGroup.getColor() : "#000";
 %>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<% if (currentGroup != null) { %>
-	<title>カレンダー - <%= currentGroup.getRoomname() %></title>
+		<title>カレンダー - <%= currentGroup.getRoomname() %></title>
 	<% } else { %>
 		<title>カレンダー - マイページ</title>
 	<% } %>
@@ -95,6 +96,12 @@ a.groupItem:hover {
 .headerLeft {
 	display: flex;
 }
+.headerRight {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+}
 .headerItem {
 	padding: 0.3rem 1rem;
 	border-right: 1px solid #000;
@@ -113,8 +120,21 @@ a.groupItem:hover {
 	gap: 1rem;
 	margin-bottom: 1rem;
 }
+.headerButton {
+	border-color: <%= color %>;
+}
+.logout {
+	color: #000;
+	text-decoration: none;
+}
+.logout:hover {
+	text-decoration: underline;
+}
 .today {
-	/* background-color: #faf; */
+	background-color: #8f0;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
 }
 .calendarContainer {
 	display: flex;
@@ -138,12 +158,12 @@ a.groupItem:hover {
 }
 .daySpan {
 	font-size: 13px;
-	opacity: 0.5;
+	color: #0005;
 	cursor: pointer;
 	user-select: none;
 }
 .daySpan:hover {
-	opacity: 1;
+	color: #000;
 }
 .schedule {
 	background-color: #eee;
@@ -154,6 +174,7 @@ a.groupItem:hover {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	cursor: pointer;
 }
 #popupBase {
 	position: absolute;
@@ -254,7 +275,8 @@ button {
 						</div>
 					<% } %>
 				</div>
-				<div>
+				<div class="headerRight">
+					<a href="logout" class="logout">ログアウト</a>
 					<% if (groupId != 0) { %>
 						<a href="Group?groupId=<%= groupId %>" class="headerItemText">&#x2699;</a>
 					<% } %>
@@ -262,14 +284,14 @@ button {
 			</div>
 			<div class="header">
 			    <div id="now">
-					<button onclick="now()">今月</button>
+					<button onclick="now()" class="headerButton">今月</button>
 				</div>
 				<div id="prev">
-					<button onclick="prev()">先月</button>
+					<button onclick="prev()" class="headerButton">先月</button>
 				</div>
 				<div id="date"></div>
 				<div id="next">
-					<button onclick="next()">翌月</button>
+					<button onclick="next()" class="headerButton">翌月</button>
 				</div>
 			</div>
 			<div class="calendarContainer">
@@ -324,24 +346,24 @@ button {
 			<table align="center">
 				<tr>
 					<td class="addPopupLeft">タイトル</td>
-					<td><div id = "popuptitle"></div>
+					<td><div id="popuptitle"></div>
 					</td>
 				</tr>
 				<tr>
 					<td class="addPopupLeft">グループ</td>
-					<td><div id = "popuproomId"></div></td>
+					<td><div id="popuproomId"></div></td>
 				</tr>
 				<tr>
 					<td class="addPopupLeft">日時</td>
-					<td><span id = "popupstartDate"></span>　～　<span id = "popupendDate"></span></td>
+					<td><span id="popupstartDate"></span>　～　<span id="popupendDate"></span></td>
 				</tr>
 				<tr>
 					<td class="addPopupLeft">詳細</td>
-					<td><div id = "popupdetail"></div></td>
+					<td><div id="popupdetail"></div></td>
 				</tr>
 				<tr>
 					<td class="addPopupLeft">場所</td>
-					<td><div id = "popupplace"></div></td>
+					<td><div id="popupplace"></div></td>
 				</tr>
 			</table>
 		</div>
@@ -356,11 +378,11 @@ button {
 				<form action="CreatServlet" method="POST">
 					<table border="0">
 						<tr>
-							<td>グループ名</td>
+							<td class="addPopupLeft">グループ名</td>
 							<td><input type="text" name="roomname" required></td>
 						</tr>
 						<tr>
-							<td>色</td>
+							<td class="addPopupLeft">色</td>
 							<td><input type="color" name="color"></td>
 						</tr>
 					</table>
@@ -369,7 +391,6 @@ button {
 			</div>
 		</div>
 	</div>
-	<a href="logout">ログアウト</a>
 </body>
 
 <script>
@@ -444,7 +465,7 @@ const getCalendar = () => {
 				el.innerHTML = '';
 			}
 			if (currentYear == year && currentMonth == month && count == day) {
-				el.classList.add('today');
+				daySpan.classList.add('today');
 			}
 			let datam = getData(count);
 			for (let d of datam) {

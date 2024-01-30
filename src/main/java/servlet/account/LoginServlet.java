@@ -17,7 +17,7 @@ import util.CommonUtil;
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -30,13 +30,15 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (CommonUtil.isLogined(request)) {
+			response.sendRedirect("top");
+		}
 		HttpSession session = request.getSession();
 
 		request.setCharacterEncoding("UTF-8");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 
-		CommonUtil util = new CommonUtil();
 		AccountDao ad = new AccountDao();
 
 		int isLogined = ad.getIsLogined(email);
@@ -44,10 +46,8 @@ public class LoginServlet extends HttpServlet {
 			request.setAttribute("email", email);
 			this.doGet(request, response);
 			return;
-		}
-
-		if (isLogined != 0) {
-			password = util.hash(password);
+		} else if (isLogined != 0) {
+			password = CommonUtil.hash(password);
 		}
 
 		UserModel user = ad.login(email, password);

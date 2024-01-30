@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class CommonUtil {
-	public String hash(String value) {
+	public static String hash(String value) {
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-256");
@@ -47,12 +47,17 @@ public class CommonUtil {
 		Object user = session.getAttribute("userId");
 		if (user == null) {
 			try {
-				res.sendRedirect("LoginServlet");
+				res.sendRedirect("login");
 				return false;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		return true;
+	}
+
+	public static boolean isLogined(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		return session.getAttribute("userId") != null;
 	}
 }

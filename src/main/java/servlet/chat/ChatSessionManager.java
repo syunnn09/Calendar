@@ -71,8 +71,18 @@ public class ChatSessionManager {
 		return null;
 	}
 
-	private String getJson() {
-		return "";
+	private String getJson(HashMap<String, String> messages) {
+		String text = "{";
+		int count = 0;
+		for (Map.Entry<String, String> entry : messages.entrySet()) {
+			text += "\"" + entry.getKey() + "\" : \"" + entry.getValue() + "\"";
+			count += 1;
+			if (count != messages.size()) {
+				text += ", ";
+			}
+		}
+		text += "}";
+		return text;
 	}
 
 	public void removeSession(String roomId, Session curSession) {
@@ -94,9 +104,18 @@ public class ChatSessionManager {
 		if (session == null) return;
 
 		String userName = chat.getUserName();
+		HashMap<String, String> messages = new HashMap<>() {
+			{
+				put("message", message);
+				put("userName", userName);
+				put("timestamp", nowstr);
+				put("systemUser", chat.getUserId() == Consts.SYSTEM_USER_ID ? "true" : "false");
+			}
+		};
+		String sendMessage = getJson(messages);
 		for (ChatSessionBean userSession : session) {
 			groupDao.setLastsaw(userSession.getUserId(), roomId);
-			userSession.getSession().getAsyncRemote().sendText("{\"message\": \"" + message + "\", \"name\": \"" + userName + "\"}");
+			userSession.getSession().getAsyncRemote().sendText(sendMessage);
 		}
 	}
 
