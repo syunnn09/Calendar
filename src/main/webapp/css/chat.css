@@ -109,12 +109,21 @@ a.groupItem:hover {
 }
 
 #chat {
+	position: relative;
 	width: 90vw;
 	height: 80vh;
 	border: 1px solid #000;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	overflow-wrap: break-word;
+	scroll-behavior: smooth;
+}
+
+#saikabu {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	cursor: pointer;
 }
 
 .mine {
