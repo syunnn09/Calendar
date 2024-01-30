@@ -12,6 +12,7 @@ public class GroupBean implements Serializable {
       private String Email;
       private int IsAdmin;
       private String color;
+      private boolean isNeedNotify;
       
 	 public GroupBean(int roomId, String roomName) {
 		  this.roomId = roomId;
@@ -105,5 +106,13 @@ public class GroupBean implements Serializable {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public boolean isNeedNotify() {
+		return isNeedNotify;
+	}
+
+	public void setNeedNotify(boolean isNeedNotify) {
+		this.isNeedNotify = isNeedNotify;
 	}
 }

@@ -37,12 +37,14 @@ public class ChatServlet extends HttpServlet {
 		}
 
 		HttpSession session = request.getSession();
-		GroupDao groupDao = new GroupDao();
 
 		int userId = (int) session.getAttribute("userId");
 		int roomId = Integer.parseInt(group);
 
+		GroupDao groupDao = new GroupDao();
 		ChatDao chatDao = new ChatDao();
+		groupDao.setLastsaw(userId, roomId);
+	
 		ChatInfoBean chatBean = chatDao.getChat(roomId, 0);
 		GroupInfoBean bean = groupDao.getAllGroup(userId);
 		request.setAttribute("groupListBean", bean);

@@ -178,6 +178,69 @@ public class GroupDao extends DaoBase {
 		return 0;
 	}
 
+	public void setLastsaw(int userId, int roomId) {
+		try {
+			int maxChatId = getReadChatId(userId, roomId);
+			String sql;
+			PreparedStatement ps;
+			this.open();
+			if (maxChatId == -1) {
+				sql = "INSERT INTO lastsaw SELECT ?, ?, (SELECT MAX(chatId) FROM chat WHERE roomId = ?)";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, userId);
+				ps.setInt(2, roomId);
+				ps.setInt(3, roomId);
+			} else {
+				sql = "UPDATE lastsaw SET lastSawChatId = (SELECT MAX(chatId) FROM chat WHERE roomId = ?) WHERE roomId = ? AND userId = ?";
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, roomId);
+				ps.setInt(2, roomId);
+				ps.setInt(3, userId);
+			}
+			ps.executeUpdate();
+			this.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int getMaxChatId(int roomId) {
+		int maxChatId = -1;
+		try {
+			this.open();
+			String sql = "SELECT MAX(chatId) FROM chat WHERE roomId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, roomId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				maxChatId = rs.getInt(1);
+			}
+			this.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxChatId;
+	}
+
+	public int getReadChatId(int userId, int roomId) {
+		int maxChatId = -1;
+		try {
+			this.open();
+			String sql = "SELECT lastSawChatId FROM lastsaw WHERE userId = ? AND roomId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ps.setInt(2, roomId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				maxChatId = rs.getInt(1);
+			}
+			this.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxChatId;
+	}
+
 	public GroupInfoBean getAllGroup(int userId) {
 		try {
 			open();
@@ -191,9 +254,12 @@ public class GroupDao extends DaoBase {
 				int roomId = rs.getInt(1);
 				String roomName = rs.getString(2);
 				String color = rs.getString(3);
+				int maxChatId = getMaxChatId(roomId);
+				int readChatId = getReadChatId(userId, roomId);
 				bean.setRoomId(roomId);
 				bean.setRoomname(roomName);
 				bean.setColor(color);
+				bean.setNeedNotify(maxChatId > readChatId);
 				groupInfoBean.addGroup(bean);
 			}
 			close();

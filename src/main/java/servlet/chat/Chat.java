@@ -14,7 +14,8 @@ public class Chat {
 
 	@OnOpen
 	public void onOpen(@PathParam("roomId") String roomId, Session curSession) {
-		manager.addSession(roomId, curSession);
+		String queryString = curSession.getQueryString();
+		manager.addSession(roomId, curSession, queryString);
 	}
 
 	@OnClose
@@ -24,8 +25,7 @@ public class Chat {
 
 	@OnMessage
 	public void onMessage(@PathParam("roomId") String roomId, String message, Session userSession) {
-		String queryString = userSession.getQueryString();
-		manager.onMessage(roomId, userSession, message, queryString);
+		manager.onMessage(roomId, userSession, message);
 	}
 
 	@OnError

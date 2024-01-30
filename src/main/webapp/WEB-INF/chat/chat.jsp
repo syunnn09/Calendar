@@ -26,9 +26,14 @@
 					<p>マイページ</p>
 				</a>
 				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
-					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
-						<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
-					</a>
+					<div class="group">
+						<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
+							<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
+						</a>
+						<% if (group.isNeedNotify()) { %>
+							<p class="notify"></p>
+						<% } %>
+					</div>
 				<% } %>
 			</div>
 		</div>
@@ -51,7 +56,26 @@
 			<div class="frame">
 				<div id="chat">
 					<% for (ChatBean chat : chatBean.getChatArray()) { %>
-						<p><%= chat.getUserName() %> : <%= chat.getMessage() %>
+						<% if (!chat.isSystemUser()) { %>
+							<div class="chatItem">
+								<div class="chatIcon">
+									<p class="usericon"><%= chat.getUserName().charAt(0) %></p>
+								</div>
+								<div class="chatItemMain">
+									<div class="chatItemHeader">
+										<p class="username"><%= chat.getUserName() %></p>
+										<p class="timestamp"><%= chat.getTimestamp() %></p>
+									</div>
+									<div class="chatItemBody">
+										<p><%= chat.getMessage() %></p>
+									</div>
+								</div>
+							</div>
+						<% } else { %>
+							<div class="chatItem chatItemSystem">
+								<p class="system"><%= chat.getMessage() %></p>
+							</div>
+						<% } %>
 					<% } %>
 				</div>
 				<p id="saikabu">最下部に移動</p>
@@ -102,7 +126,7 @@
 		wsUrl = 'wss://';
 	}
 
-	var ws = new WebSocket(wsUrl + window.location.host + '/Calendar/chat/echo/<%= groupId %>?userId=<%= userId %>&mail=34');
+	var ws = new WebSocket(wsUrl + window.location.host + '/Calendar/chat/echo/<%= groupId %>?userId=<%= userId %>');
 
 	ws.onmessage = function(event) {
 		var elem = document.createElement('div');
