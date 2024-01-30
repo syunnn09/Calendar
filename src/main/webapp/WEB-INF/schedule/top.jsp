@@ -8,8 +8,6 @@
 	ArrayList<ScheduleRecordBean> record = infoBean.getScheduleRecordArray();
 	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
 	GroupBean currentGroup = groupListBean.get(groupId);
-	ScheduleRecordBean recordBean = (ScheduleRecordBean) request.getAttribute("recordBean");
-	ArrayList<ScheduleRecordBean> infoArray = infoBean.getScheduleRecordArray();
 %>
 <!DOCTYPE html>
 <html>
