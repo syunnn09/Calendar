@@ -8,6 +8,8 @@
 	ArrayList<ScheduleRecordBean> record = infoBean.getScheduleRecordArray();
 	GroupInfoBean groupListBean = (GroupInfoBean) request.getAttribute("groupListBean");
 	GroupBean currentGroup = groupListBean.get(groupId);
+	ScheduleRecordBean recordBean = (ScheduleRecordBean) request.getAttribute("recordBean");
+	ArrayList<ScheduleRecordBean> infoArray = infoBean.getScheduleRecordArray();
 %>
 <!DOCTYPE html>
 <html>
@@ -91,6 +93,12 @@ a.groupItem:hover {
 	color: #000;
 	text-decoration: none;
 }
+.headerItemText2 {
+	color: #000;
+	text-decoration: none;
+	font-size:25px;
+}
+
 .headerItemText:hover {
 	text-decoration: underline;
 }
@@ -300,6 +308,34 @@ button {
 				<input type="submit"value="作成">
 			</form>
 		</div>
+	</div>	
+	<div id="popupDetail" class="popup">
+		<button onclick="closePopup()" class="closePopup">x</button>
+		<div class="popupInner">
+			<table align="center">
+				<tr>
+					<td class="addPopupLeft">タイトル</td>
+					<td><div id = "popuptitle"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="addPopupLeft">グループ</td>
+					<td><div id = "popuproomId"></div></td>
+				</tr>
+				<tr>
+					<td class="addPopupLeft">日時</td>
+					<td><span id = "popupstartDate"></span>　～　<span id = "popupendDate"></span></td>
+				</tr>
+				<tr>
+					<td class="addPopupLeft">詳細</td>
+					<td><div id = "popupdetail"></div></td>
+				</tr>
+				<tr>
+					<td class="addPopupLeft">場所</td>
+					<td><div id = "popupplace"></div></td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<div id="addPopup" class="popup">
 		<div class="addPopupHeader">
@@ -331,6 +367,7 @@ button {
 const qs = (q) => document.getElementById(q);
 const ce = (q) => document.createElement(q);
 const calendar = qs('calendar');
+var detail = qs('detail');
 
 let calendarElements = [];
 
@@ -405,7 +442,9 @@ const getCalendar = () => {
 				let scheduleEl = ce('div');
 				scheduleEl.classList.add('schedule');
 				scheduleEl.innerHTML = d.title;
+				scheduleEl.dataset.scheduleId = d.scheduleId;
 				scheduleEl.style.setProperty('--color', d.color);
+				scheduleEl.addEventListener('click', () => getDetailData(d.scheduleId));
 				dayEl.appendChild(scheduleEl);
 				calendarElements.push(scheduleEl);
 			}
@@ -449,6 +488,12 @@ const next = () => {
 	getCalendar();
 }
 
+async function getDetailData(scheduleId) {
+	await fetch("http://localhost:8080/Calendar/api/schedule?scheduleId=" + scheduleId)
+		.then(res => res.json())
+		.then(data => openDetail(data));	
+}
+
 let data = {}
 <% for (ScheduleRecordBean bean: record) { %>
 	var startDate = '<%= bean.getStartDate() %>'.split('-');
@@ -464,7 +509,7 @@ let data = {}
 	if (!data[startYear][startMonth][startDay]) {
 		data[startYear][startMonth][startDay] = [];
 	}
-	var data_json = { title: '<%= bean.getTitle() %>', color: '<%= bean.getColor() %>' };
+	var data_json = { scheduleId: <%= bean.getScheduleId() %>, title: '<%= bean.getTitle() %>', color: '<%= bean.getColor() %>' };
 	data[startYear][startMonth][startDay].push(data_json);
 <% } %>
 
@@ -477,6 +522,11 @@ const tr = ce('tr');
 for (d of days) {
 	let el = ce('th');
 	el.innerHTML = d;
+	 if (d === '日') {
+		 el.classList.add('sunday');
+		 } else if(d ==='土') {
+		 el.classList.add('suturday');
+	}	
 	tr.appendChild(el);
 }
 table.appendChild(tr)
@@ -498,9 +548,24 @@ const openPopup = (day) => {
 	}
 }
 
+const openDetail = (schedule) => {
+	const popup = qs('popupBase');
+	qs('popupDetail').classList.add('open');
+	popup.classList.add('open');
+	popup.addEventListener('click', closePopup);
+
+	qs('popuptitle').innerHTML = schedule.title;
+	qs('popuproomId').innerHTML = schedule.roomId;
+	qs('popupstartDate').innerHTML = schedule.startDate;
+	qs('popupendDate').innerHTML = schedule.endDate;
+	qs('popupdetail').innerHTML = schedule.detail;
+	qs('popupplace').innerHTML = schedule.place;
+}
+
 const closePopup = () => {
 	const popup = qs('popupBase');
 	qs('popupMain').classList.remove('open');
+	qs('popupDetail').classList.remove('open');
 	qs('addPopup').classList.remove('open');
 	popup.classList.remove('open');
 }

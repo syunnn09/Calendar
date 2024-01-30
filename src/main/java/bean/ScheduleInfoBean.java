@@ -22,4 +22,13 @@ public class ScheduleInfoBean {
 	public ArrayList<ScheduleRecordBean> getScheduleRecordArray() {
 		return this.scheduleRecordArray;
 	}
+	
+	public ScheduleRecordBean get(int scheduleId) {
+		for (ScheduleRecordBean bean: this.scheduleRecordArray) {
+			if (bean.getScheduleId() == scheduleId) {
+				return bean;
+			}
+		}
+		return null;
+	}
 }
