@@ -129,12 +129,16 @@
 	var ws = new WebSocket(wsUrl + window.location.host + '/Calendar/chat/echo/<%= groupId %>?userId=<%= userId %>');
 
 	ws.onmessage = function(event) {
-		var elem = document.createElement('div');
-
 		var data = JSON.parse(event.data);
-		elem.innerHTML = data.name + ' : ' + data.message;
 
-		chat.appendChild(elem);
+		var chatItem;
+		if (data.systemUser === 'true') {
+			chatItem = createSystemChatItem(data);
+		} else {
+			chatItem = createChatItem(data);
+		}
+
+		chat.appendChild(chatItem);
 		scrollToBottom();
 	}
 
@@ -153,13 +157,61 @@
 	}
 	scrollToBottom();
 
+	function createDom(tag, className) {
+		var dom = ce(tag);
+		dom.classList.add(className);
+		return dom;
+	}
+
+	function createChatItem(chatContent) {
+		var chatItem = createDom('div', 'chatItem');
+		var chatIcon = createDom('div', 'chatIcon');
+		var userIcon = createDom('div', 'usericon');
+		userIcon.innerHTML = chatContent.userName[0];
+		chatIcon.appendChild(userIcon);
+		var chatItemMain = createDom('div', 'chatItemMain');
+		var chatItemHeader = createDom('div', 'chatItemHeader');
+		var userName = createDom('p', 'username');
+		userName.innerHTML = chatContent.userName;
+		var timestamp = createDom('p', 'timestamp');
+		timestamp.innerHTML = chatContent.timestamp;
+		chatItemHeader.appendChild(userName);
+		chatItemHeader.appendChild(timestamp);
+		var chatItemBody = createDom('div', 'chatItemBody')
+		var chatBody = createDom('div', 'chatBody');
+		chatBody.innerHTML = chatContent.message;
+		chatItemBody.appendChild(chatBody);
+		chatItemMain.appendChild(chatItemHeader);
+		chatItemMain.appendChild(chatItemBody);
+		chatItem.appendChild(chatIcon);
+		chatItem.appendChild(chatItemMain);
+
+		return chatItem;
+	}
+
+	function createSystemChatItem(chatContent) {
+		var chatItem = createDom('div', 'chatItem');
+		chatItem.classList.add('chatItemSystem');
+		var system = createDom('p', 'system');
+		system.innerHTML = chatContent.message;
+		chatItem.appendChild(system);
+
+		return chatItem;
+	}
+
 	function convertData(data) {
 		console.log(data);
 		var prevHeight = chat.scrollHeight;
 		if (data.size == 0) return;
 
 		for (chatContent of data.chatArray) {
-			chat.innerHTML = chatContent.userName + ' : ' + chatContent.message + '<br>' + chat.innerHTML;
+			var chatItem;
+			if (chatContent.systemUser) {
+				chatItem = createSystemChatItem(chatContent);
+			} else {
+				chatItem = createChatItem(chatContent);
+			}
+			chat.prepend(chatItem);
 		}
 		isLoading = false;
 		chat.scrollTop = chat.scrollHeight - prevHeight;
@@ -172,7 +224,7 @@
 	}
 
 	chat.addEventListener('scroll', (e) => {
-		if((chat.scrollHeight - chat.scrollTop) / chat.scrollHeight >= 0.75 ){
+		if ((chat.scrollHeight - chat.scrollTop) / chat.scrollHeight >= 0.75) {
 			saikabu.style.display = so;
 		} else {
 			saikabu.style.display ='none';

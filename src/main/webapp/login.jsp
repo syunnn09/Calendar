@@ -14,7 +14,7 @@
 <body>
     <div class="login-container">
         <h1>LOGIN</h1>
-        <form action="LoginServlet" name="loginForm" method="post">
+        <form action="login" name="loginForm" method="post">
             <input type="text" name="email" placeholder="user name" value="<%= text %>" required>
             <input type="password" name="password" id="password" placeholder="password" required>
             <button name="button">login</button>
