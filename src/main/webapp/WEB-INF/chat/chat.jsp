@@ -54,6 +54,7 @@
 						<p><%= chat.getUserName() %> : <%= chat.getMessage() %>
 					<% } %>
 				</div>
+				<p id="saikabu">最下部に移動</p>
 			</div>
 			<textarea type="text" id="msg"></textarea>
 			<button onclick="sendMsg()">送信</button>
@@ -87,6 +88,9 @@
 <script>
 	const qs = (q) => document.getElementById(q);
 	const ce = (q) => document.createElement(q);
+	const saikabu = qs('saikabu');
+	saikabu.addEventListener('click', scrollToBottom);
+	const so = saikabu.style.display;
 	var page = 0;
 	var isLoading = false;
 	var chat = document.getElementById('chat');
@@ -121,6 +125,7 @@
 
 	function scrollToBottom() {
 		chat.scrollTop = chat.scrollHeight;
+		saikabu.style.display = 'none';
 	}
 	scrollToBottom();
 
@@ -143,6 +148,11 @@
 	}
 
 	chat.addEventListener('scroll', (e) => {
+		if((chat.scrollHeight - chat.scrollTop) / chat.scrollHeight >= 0.75 ){
+			saikabu.style.display = so;
+		} else {
+			saikabu.style.display ='none';
+		}
 		if (isLoading) return;
 
 		if (chat.scrollTop == 0) {
