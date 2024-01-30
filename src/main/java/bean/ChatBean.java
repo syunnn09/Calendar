@@ -82,4 +82,8 @@ public class ChatBean implements Serializable {
 		this.userName = userName;
 	}
 
+	public boolean isSystemUser() {
+		return this.userId == 0;
+	}
+
 }

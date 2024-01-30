@@ -74,7 +74,7 @@ public class ChatDao extends DaoBase {
 			ps.setInt(2, bean.getUserId());
 			ps.setString(3, bean.getMessage());
 			ps.setString(4, bean.getTimestamp());
-			int result = ps.executeUpdate();
+			ps.executeUpdate();
 			this.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

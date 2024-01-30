@@ -48,6 +48,9 @@ table {
 .groupItems::-webkit-scrollbar {
 	display: none;
 }
+.group {
+	position: relative;
+}
 .groupItem {
 	display: block;
 	width: 60px;
@@ -71,6 +74,15 @@ table {
 }
 a.groupItem:hover {
 	text-decoration: underline;
+}
+.notify {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 10px;
+	height: 10px;
+	background-color: #f00;
+	border-radius: 50%;
 }
 .headerItems {
 	display: flex;
@@ -138,7 +150,7 @@ a.groupItem:hover {
 	display: block;
 	text-align: center;
 	border-left: 5px solid var(--color);
-	width: 100%;
+	width: calc(90vw / 7);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -219,9 +231,14 @@ button {
 					<p>マイページ</p>
 				</a>
 				<% for (GroupBean group: groupListBean.getGroupArray()) { %>
-					<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
-						<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
-					</a>
+					<div class="group">
+						<a href="?groupId=<%= group.getRoomId() %>" class="groupItem<%= group.getRoomId() == groupId ? " current" : "" %>" style="border-color: <%= group.getColor() %>">
+							<p title="<%= group.getRoomname() %>"><%= group.getRoomname() %></p>
+						</a>
+						<% if (group.isNeedNotify()) { %>
+							<p class="notify"></p>
+						<% } %>
+					</div>
 				<% } %>
 			</div>
 		</div>

@@ -29,6 +29,20 @@
 	display: none;
 }
 
+.group {
+	position: relative;
+}
+
+.notify {
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 10px;
+	height: 10px;
+	background-color: #f00;
+	border-radius: 50%;
+}
+
 .groupItem {
 	display: block;
 	width: 60px;
@@ -110,13 +124,12 @@ a.groupItem:hover {
 
 #chat {
 	position: relative;
-	width: 90vw;
+	width: 85vw;
 	height: 80vh;
 	border: 1px solid #000;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	overflow-wrap: break-word;
-	scroll-behavior: smooth;
 }
 
 #saikabu {
@@ -136,6 +149,59 @@ a.groupItem:hover {
 	padding-left: 1rem;
 	width: 90vw;
 	text-align: left;
+}
+
+.chatItem {
+	margin-top: 0.5rem;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.usericon {
+	width: 25px;
+	height: 25px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	border: 1px solid #000;
+	border-radius: 50%;
+}
+
+.chatItemMain {
+	width: 100%;
+	margin-top: 0.1rem;
+	margin-left: 0.3rem;
+}
+
+.chatItemHeader {
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.timestamp {
+	font-size: 13px;
+	font-weight: lighter;
+	opacity: 0.7;
+}
+
+.chatItemBody {
+	width: 90%;
+}
+
+.chatItemSystem {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.system {
+	padding: 3px;
+	border: 1px solid #000;
+	border-radius: 5px;
 }
 
 #popupBase {

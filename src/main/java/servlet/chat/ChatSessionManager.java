@@ -10,7 +10,9 @@ import java.util.Map;
 import javax.websocket.Session;
 
 import bean.ChatBean;
+import bean.ChatSessionBean;
 import dao.ChatDao;
+import dao.GroupDao;
 import util.Consts;
 
 public class ChatSessionManager {
@@ -18,6 +20,7 @@ public class ChatSessionManager {
 	LocalDateTime now;
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD HH:mm:ss");
 	ChatDao chatDao = new ChatDao();
+	GroupDao groupDao = new GroupDao();
 	private final String SYSTEM_USER_NAME = "SYSTEM";
 
 	public static ChatSessionManager getManager() {
@@ -41,46 +44,68 @@ public class ChatSessionManager {
 		return map;
 	}
 
-	HashMap<String, List<Session>> sessions = new HashMap<>();
+	HashMap<String, List<ChatSessionBean>> sessions = new HashMap<>();
 
-	public void addSession(String roomId, Session curSession) {
-		List<Session> session = sessions.get(roomId);
+	public void addSession(String roomId, Session curSession, String queryString) {
+		List<ChatSessionBean> session = sessions.get(roomId);
 		if (session == null) {
-			List<Session> newSession = new ArrayList<>();
+			List<ChatSessionBean> newSession = new ArrayList<>();
 			sessions.put(roomId, newSession);
 			session = sessions.get(roomId);
 		}
-		session.add(curSession);
+		Map<String, String> queryMap = getQueryMap(queryString);
+		int userId = Integer.parseInt(queryMap.get("userId"));
+		String userName = chatDao.getUserName(userId);
+		ChatSessionBean chatSessionBean = new ChatSessionBean(curSession, userId, userName);
+		session.add(chatSessionBean);
 		sessions.replace(roomId, session);
 	}
 
+	private ChatSessionBean getUserSession(String roomId, Session session) {
+		List<ChatSessionBean> list = sessions.get(roomId);
+		for (ChatSessionBean bean : list) {
+			if (bean.getSession() == session) {
+				return bean;
+			}
+		}
+		return null;
+	}
+
+	private String getJson() {
+		return "";
+	}
+
 	public void removeSession(String roomId, Session curSession) {
-		List<Session> session = sessions.get(roomId);
-		session.remove(curSession);
+		ChatSessionBean userSession = getUserSession(roomId, curSession);
+		List<ChatSessionBean> session = sessions.get(roomId);
+		session.remove(userSession);
+		sessions.replace(roomId, session);
 	}
 
 	public void sendMessage(ChatBean chat) {
 		now = LocalDateTime.now();
 		String nowstr = dtf.format(now);
 		chat.setTimestamp(nowstr);
-		String userName = chatDao.getUserName(chat.getUserId());
 		chatDao.insert(chat);
 
 		String message = chat.getMessage();
-		List<Session> session = sessions.get(String.valueOf(chat.getRoomId()));
+		int roomId = chat.getRoomId();
+		List<ChatSessionBean> session = sessions.get(String.valueOf(chat.getRoomId()));
 		if (session == null) return;
-		for (Session userSession : session) {
-			userSession.getAsyncRemote().sendText("{\"message\": \"" + message + "\", \"name\": \"" + userName + "\"}");
+
+		String userName = chat.getUserName();
+		for (ChatSessionBean userSession : session) {
+			groupDao.setLastsaw(userSession.getUserId(), roomId);
+			userSession.getSession().getAsyncRemote().sendText("{\"message\": \"" + message + "\", \"name\": \"" + userName + "\"}");
 		}
 	}
 
-	public void onMessage(String roomId, Session user, String message, String queryString) {
-		Map<String, String> queryMap = getQueryMap(queryString);
-		int userId = Integer.parseInt(queryMap.get("userId"));
+	public void onMessage(String roomId, Session user, String message) {
 		message = message.replace("\n", "<br>");
-
 		int room = Integer.parseInt(roomId);
-		ChatBean chat = new ChatBean(room, userId, message);
+		ChatSessionBean session = getUserSession(String.valueOf(room), user);
+		ChatBean chat = new ChatBean(room, session.getUserId(), message);
+		chat.setUserName(session.getUserName());
 		this.sendMessage(chat);
 	}
 
