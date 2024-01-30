@@ -91,12 +91,6 @@ a.groupItem:hover {
 	color: #000;
 	text-decoration: none;
 }
-.headerItemText2 {
-	color: #000;
-	text-decoration: none;
-	font-size:25px;
-}
-
 .headerItemText:hover {
 	text-decoration: underline;
 }
