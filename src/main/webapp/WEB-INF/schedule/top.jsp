@@ -239,6 +239,9 @@ button {
 .addPopupLeft {
 	padding-right: 1rem;
 }
+.systemBtns {
+	margin-top: 1rem;
+}
 </style>
 
 <body>
@@ -366,6 +369,10 @@ button {
 					<td><div id="popupplace"></div></td>
 				</tr>
 			</table>
+			<div class="systemBtns">
+				<button class="deleteButton">削除</button>
+				<button class="editButton">編集</button>
+			</div>
 		</div>
 	</div>
 	<div id="addPopup" class="popup">

@@ -141,4 +141,20 @@ public class AccountDao extends DaoBase {
 			return -1;
 		}
 	}
+
+	public boolean checkJoin(int userId, int roomId) {
+		try {
+			this.open();
+			String sql = "SELECT userId FROM joins WHERE userId = ? AND roomId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ps.setInt(2, roomId);
+			ResultSet rs = ps.executeQuery();
+			this.close();
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

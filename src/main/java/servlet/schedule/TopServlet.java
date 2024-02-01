@@ -34,13 +34,21 @@ public class TopServlet extends HttpServlet {
 		HttpSession session = request.getSession();		
 		int userId = (int) session.getAttribute("userId");
 		String groupId = (String) request.getParameter("groupId");
+		int roomId = 0;
+		if (groupId != null) {
+			roomId = Integer.parseInt(groupId);
+			if (!CommonUtil.isJoinRoom(request, response, roomId)) {
+				response.sendRedirect("top");
+				return;
+			}
+		}
 
 		ScheduleDao scheduleDao = new ScheduleDao();
 		GroupDao groupDao = new GroupDao();
 		ScheduleInfoBean infoBean;
 
 		if (groupId != null) {
-			infoBean = scheduleDao.getScheduleArray(Integer.parseInt(groupId));
+			infoBean = scheduleDao.getScheduleArray(roomId);
 		} else {
 			infoBean = scheduleDao.getAll(userId);
 		}
