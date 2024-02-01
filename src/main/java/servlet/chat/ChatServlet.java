@@ -41,10 +41,15 @@ public class ChatServlet extends HttpServlet {
 		int userId = (int) session.getAttribute("userId");
 		int roomId = Integer.parseInt(group);
 
+		if (!CommonUtil.isJoinRoom(request, response, roomId)) {
+			response.sendRedirect("top");
+			return;
+		}
+
 		GroupDao groupDao = new GroupDao();
 		ChatDao chatDao = new ChatDao();
 		groupDao.setLastsaw(userId, roomId);
-	
+
 		ChatInfoBean chatBean = chatDao.getChat(roomId, 0);
 		GroupInfoBean bean = groupDao.getAllGroup(userId);
 		request.setAttribute("groupListBean", bean);
