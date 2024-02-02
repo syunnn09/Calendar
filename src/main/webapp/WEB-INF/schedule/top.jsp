@@ -162,6 +162,12 @@ a.groupItem:hover {
 	cursor: pointer;
 	user-select: none;
 }
+.sunday {
+	color: #f00;
+}
+.saturday {
+	color: #00f;
+}
 .daySpan:hover {
 	color: #000;
 }
@@ -240,7 +246,15 @@ button {
 	padding-right: 1rem;
 }
 .systemBtns {
+	display: flex;
 	margin-top: 1rem;
+	gap: 1rem;
+}
+.deleteButton, .editButton {
+	height: 24px;
+}
+.deleteButton {
+	border: 1px solid #f00;
 }
 </style>
 
@@ -307,6 +321,7 @@ button {
 		<button onclick="closePopup()" class="closePopup">x</button>
 		<div class="popupInner">
 			<form action="CreateScheduleServlet" method="post" name="createScheduleForm">
+				<input type="hidden" name="scheduleId">
 				<table align="center">
 					<tr>
 						<td class="addPopupLeft">タイトル</td>
@@ -339,7 +354,7 @@ button {
 						<td><input type="textarea" name="place"></td>
 					</tr>
 				</table>
-				<input type="submit"value="作成">
+				<input type="submit" name="submit" value="作成">
 			</form>
 		</div>
 	</div>	
@@ -370,8 +385,12 @@ button {
 				</tr>
 			</table>
 			<div class="systemBtns">
-				<button class="deleteButton">削除</button>
-				<button class="editButton">編集</button>
+				<form action="DeleteScheduleServlet" method="POST" name="deleteScheduleForm">
+					<input type="hidden" name="roomId">
+					<input type="hidden" name="scheduleId">
+					<button class="deleteButton">削除</button>
+				</form>
+				<button class="editButton" onclick="editSchedule()">編集</button>
 			</div>
 		</div>
 	</div>
@@ -405,6 +424,7 @@ const qs = (q) => document.getElementById(q);
 const ce = (q) => document.createElement(q);
 const calendar = qs('calendar');
 var detail = qs('detail');
+var currentDisplaySchedule;
 
 let calendarElements = [];
 
@@ -561,14 +581,16 @@ for (d of days) {
 	el.innerHTML = d;
 	 if (d === '日') {
 		 el.classList.add('sunday');
-		 } else if(d ==='土') {
-		 el.classList.add('suturday');
-	}	
+	} else if(d ==='土') {
+		 el.classList.add('saturday');
+	}
 	tr.appendChild(el);
 }
 table.appendChild(tr)
 
 const openPopup = (day) => {
+	document.createScheduleForm.reset();
+	document.createScheduleForm.action = "CreateScheduleServlet";
 	const popup = qs('popupBase');
 	qs('popupMain').classList.add('open');
 	popup.classList.add('open');
@@ -586,6 +608,7 @@ const openPopup = (day) => {
 }
 
 const openDetail = (schedule) => {
+	currentDisplaySchedule = schedule;
 	const popup = qs('popupBase');
 	qs('popupDetail').classList.add('open');
 	popup.classList.add('open');
@@ -597,6 +620,27 @@ const openDetail = (schedule) => {
 	qs('popupendDate').innerHTML = schedule.endDate;
 	qs('popupdetail').innerHTML = schedule.detail;
 	qs('popupplace').innerHTML = schedule.place;
+	document.deleteScheduleForm.roomId.value = schedule.roomId;
+	document.deleteScheduleForm.scheduleId.value = schedule.scheduleId;
+}
+
+const editSchedule = () => {
+	document.createScheduleForm.action = "EditScheduleServlet";
+	document.createScheduleForm.scheduleId.value = currentDisplaySchedule.scheduleId;
+	document.createScheduleForm.title.value = currentDisplaySchedule.title;
+	document.createScheduleForm.groupId.value = currentDisplaySchedule.roomId;
+	document.createScheduleForm.startDate.value = currentDisplaySchedule.startDate;
+	document.createScheduleForm.endDate.value = currentDisplaySchedule.endDate;
+	document.createScheduleForm.detail.value = currentDisplaySchedule.detail;
+	document.createScheduleForm.place.value = currentDisplaySchedule.place;
+	document.createScheduleForm.submit.value = '更新';
+	console.log(currentDisplaySchedule);
+
+	closePopup();
+	const popup = qs('popupBase');
+	qs('popupMain').classList.add('open');
+	popup.classList.add('open');
+	popup.addEventListener('click', closePopup);
 }
 
 const closePopup = () => {
@@ -605,6 +649,7 @@ const closePopup = () => {
 	qs('popupDetail').classList.remove('open');
 	qs('addPopup').classList.remove('open');
 	popup.classList.remove('open');
+	currentDisplaySchedule = null;
 }
 
 const addGroup = qs('addGroup');

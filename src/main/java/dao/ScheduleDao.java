@@ -119,12 +119,51 @@ public class ScheduleDao extends DaoBase {
 			pStmt.setString(6, srb.getPlace());
 			pStmt.executeUpdate();
 			close();
+
 			String message = "[予定: " + srb.getTitle() + " が作成されました。]";
 			ChatSessionManager.getManager().sendSystemMessage(srb.getRoomId(), message);
 		} catch (SQLException e) {
 
 		}
 		return true;
+	}
+
+	public void delete(ScheduleRecordBean bean) {
+		try {
+			this.open();
+			String sql = "DELETE FROM schedules WHERE scheduleId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, bean.getScheduleId());
+			ps.executeUpdate();
+			this.close();
+
+			String message = "[予定: " + bean.getTitle() + " が削除されました。]";
+			ChatSessionManager.getManager().sendSystemMessage(bean.getRoomId(), message);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void edit(ScheduleRecordBean bean) {
+		try {
+			this.open();
+			String sql = "UPDATE schedules SET roomId = ?, startDate = ?, endDate = ?, title = ?, detail = ?, place = ? WHERE scheduleId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, bean.getRoomId());
+			ps.setString(2, bean.getStartDate());
+			ps.setString(3, bean.getEndDate());
+			ps.setString(4, bean.getTitle());
+			ps.setString(5, bean.getDetail());
+			ps.setString(6, bean.getPlace());
+			ps.setInt(7, bean.getScheduleId());
+			ps.executeUpdate();
+			this.close();
+
+			String message = "[予定: " + bean.getTitle() + " が更新されました。]";
+			ChatSessionManager.getManager().sendSystemMessage(bean.getRoomId(), message);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

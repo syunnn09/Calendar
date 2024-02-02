@@ -18,7 +18,7 @@ import util.Consts;
 public class ChatSessionManager {
 	static ChatSessionManager manager;
 	LocalDateTime now;
-	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/DD HH:mm:ss");
+	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 	ChatDao chatDao = new ChatDao();
 	GroupDao groupDao = new GroupDao();
 	private final String SYSTEM_USER_NAME = "SYSTEM";
