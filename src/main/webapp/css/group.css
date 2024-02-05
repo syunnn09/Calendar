@@ -1,4 +1,9 @@
 @charset "UTF-8";
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 body{
 	width:100%;
 	height:100%;
@@ -8,13 +13,14 @@ textarea{
 	resize:none;
 }
 table{
+	width: 100%;
 	border: 3px solid #fff;
 	border-collapse: collapse;
 	border-top: 1px solid #000;
 	border-bottom: 1px solid #000;
 }
 td{
-	text-align: left;
+	text-align: center;
 	border: 3px solid #fff;
 }
 .head{

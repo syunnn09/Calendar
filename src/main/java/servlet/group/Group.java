@@ -23,30 +23,25 @@ public class Group extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!CommonUtil.checkLogin(request, response)) {
 			return;
 		}
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();	
-		int roomId=Integer.parseInt(request.getParameter("groupId"));
-		int userId=(int)session.getAttribute("userId");
-		GroupDao gd =new GroupDao();
+		int roomId = Integer.parseInt(request.getParameter("groupId"));
+		int userId = (int)session.getAttribute("userId");
+		GroupDao gd = new GroupDao();
 		request.setAttribute("result", gd.yesmemSelect(roomId));
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("admin", gd.adminCheck(userId,roomId));		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		GroupDao gd = new GroupDao();
 		String value = request.getParameter("button");
 		int roomId = Integer.parseInt(request.getParameter("groupId"));

@@ -4,10 +4,10 @@
 <%@ page import="bean.GroupBean"%>
 <%@ page import="java.util.ArrayList"%>
 <%
-GroupInfoBean gib = (GroupInfoBean) request.getAttribute("result");
-int roomId = (int) request.getAttribute("roomId");
-int admin = (int) request.getAttribute("admin");
-ArrayList<GroupBean> groupArray = gib.getGroupArray();
+	GroupInfoBean gib = (GroupInfoBean) request.getAttribute("result");
+	int roomId = (int) request.getAttribute("roomId");
+	int admin = (int) request.getAttribute("admin");
+	ArrayList<GroupBean> groupArray = gib.getGroupArray();
 %>
 <!DOCTYPE html>
 <html>
