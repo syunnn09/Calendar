@@ -36,11 +36,10 @@ public class ChangeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
-		CommonUtil util = new CommonUtil();
 
 		int userId = (int) session.getAttribute("userId");
 		String password = request.getParameter("newPassword");
-		password = util.hash(password);
+		password = CommonUtil.hash(password);
 
 		AccountDao ad = new AccountDao();
 		boolean isSuccess = ad.changePassword(userId, password);

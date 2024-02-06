@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import dao.GroupDao;
 
@@ -23,18 +22,14 @@ public class AddMemberServlet extends HttpServlet {
 		try {
 			int[] userIds = Stream.of(request.getParameterValues("insertUserIds")).mapToInt(Integer::parseInt).toArray();
 
-			HttpSession session = request.getSession();
-
 			GroupDao gd = new GroupDao();
 			gd.insert(userIds, roomId);
 
 			request.setAttribute("result", gd.notmemSelect(roomId));
 			request.setAttribute("roomId", roomId);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
-//		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/group/group.jsp");
-//		dispatcher.forward(request, response);
 		response.sendRedirect("Group?groupId=" + roomId);
 
 	}

@@ -27,7 +27,7 @@ public class RemoveMemberServlet extends HttpServlet {
 
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
-		
+
 		//新しく追加した部分
 		request.setAttribute("roomId", roomId);
 		request.setAttribute("userId", userId);
@@ -40,15 +40,12 @@ public class RemoveMemberServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
-		
+
 		GroupBean bean = new GroupBean(roomId, userId);
-		
 		GroupDao Dao = new GroupDao();
-		
+
 		Dao.delete(bean);
 		response.sendRedirect("Group?groupId=" + roomId);
 	}
