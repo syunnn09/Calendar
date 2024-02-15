@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import bean.GroupBean;
 import bean.GroupInfoBean;
+import servlet.chat.ChatSessionManager;
 
 public class GroupDao extends DaoBase {
 	//グループ作成
@@ -97,6 +98,7 @@ public class GroupDao extends DaoBase {
 
   	public void insert(int[] userIds, int roomId) {
 		try {
+			String users = "";
 			open();
 			for (int i = 0; i < userIds.length; i++) {
 				String sql = "Insert Into joins(userId, roomId) values(?, ?)";
@@ -104,10 +106,17 @@ public class GroupDao extends DaoBase {
 				pStmt = conn.prepareStatement(sql);
 				pStmt.setInt(1, userIds[i]);
 				pStmt.setInt(2, roomId);
+				if(i < userIds.length-1) {
+					users += getUserName(userIds[i]);
+					users += ",";
+				}else {
+					users += getUserName(userIds[i]);
+				}
 				pStmt.executeUpdate();
 			}
 			close();
-
+			String message = "[メンバー:" + users + " が追加されました。]";
+			ChatSessionManager.getManager().sendSystemMessage(roomId, message);
 		} catch (SQLException e) {
 
 		}

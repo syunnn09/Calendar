@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import bean.ChatBean;
 import bean.ChatInfoBean;
-import bean.ScheduleRecordBean;
 
 public class ChatDao extends DaoBase {
 	private static final int PAGE_CONTENTS_COUNT = 30;
@@ -81,29 +80,14 @@ public class ChatDao extends DaoBase {
 		}
 	}
 
-	public String getUserName(int userId) {
-		try {
-			this.open();
-			String sql = "SELECT name FROM users WHERE userId = ?";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, userId);
-			ResultSet rs = ps.executeQuery();
-			this.close();
-			if (rs.next()) {
-				return rs.getString(1);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
-	public void createSystemMessage(ScheduleRecordBean bean, String message) {
+	public void createSystemMessage(int roomId, String message) {
 		try {
 			this.open();
 			String sql = "INSERT INTO chat(roomId, userId, message) VALUES(?, 0, ?)";
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, bean.getRoomId());
+			ps.setInt(1, roomId);
 			ps.setString(2, message);
 			ps.executeUpdate();
 			this.close();
