@@ -2,6 +2,8 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DaoBase {
@@ -30,5 +32,22 @@ public class DaoBase {
 		} catch (SQLException e) {
 			return;
 		}
+	}
+	
+	public String getUserName(int userId) {
+		try {
+			this.open();
+			String sql = "SELECT name FROM users WHERE userId = ?";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			this.close();
+			if (rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
