@@ -106,11 +106,9 @@ public class GroupDao extends DaoBase {
 				pStmt = conn.prepareStatement(sql);
 				pStmt.setInt(1, userIds[i]);
 				pStmt.setInt(2, roomId);
-				if(i < userIds.length-1) {
-					users += getUserName(userIds[i]);
-					users += ",";
-				}else {
-					users += getUserName(userIds[i]);
+				users += getUserName(userIds[i]);
+				if (i < userIds.length - 1) {
+				    users += ", ";
 				}
 				pStmt.executeUpdate();
 			}
