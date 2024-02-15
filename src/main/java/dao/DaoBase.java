@@ -41,7 +41,6 @@ public class DaoBase {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, userId);
 			ResultSet rs = ps.executeQuery();
-			this.close();
 			if (rs.next()) {
 				return rs.getString(1);
 			}

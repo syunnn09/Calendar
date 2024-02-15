@@ -116,7 +116,7 @@ public class GroupDao extends DaoBase {
 			String message = "[メンバー:" + users + " が追加されました。]";
 			ChatSessionManager.getManager().sendSystemMessage(roomId, message);
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 
 	}
@@ -139,7 +139,7 @@ public class GroupDao extends DaoBase {
 			close();
 
 		} catch (SQLException e) {
-
+			e.printStackTrace();
 		}
 	}
 
@@ -163,7 +163,7 @@ public class GroupDao extends DaoBase {
 			}
 			return gib;
 		} catch (SQLException e) {
-			System.out.println("adminselect失敗");
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -180,7 +180,7 @@ public class GroupDao extends DaoBase {
 			close();
 			return rs.getInt("admin");
 		} catch (SQLException e) {
-			System.out.println("adminCheck失敗");
+			e.printStackTrace();
 		}
 		return 0;
 	}
