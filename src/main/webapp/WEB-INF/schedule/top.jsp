@@ -26,14 +26,11 @@
 	border-color: <%= color %>;
 }
 </style>
-
 <body>
 	<div class="container">
 		<div class="groupContainer">
 			<div class="groupItems">
-				<form action="" method="POST">
-					<div class="groupItem plus" id="addGroup">+</div>
-				</form>
+				<div class="groupItem plus" id="addGroup">+</div>
 				<a href="top" class="groupItem<%= groupId == 0 ? " current" : "" %>">
 					<p>マイページ</p>
 				</a>

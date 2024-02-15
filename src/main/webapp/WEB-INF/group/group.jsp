@@ -19,7 +19,7 @@
 <body>
 	<!-- メンバ追加、管理者変更 -->
 	<form action="Group" method="post">
-		ルームID:<%=roomId%><br> <input type="hidden" name="groupId" value="<%=roomId%>">
+		<input type="hidden" name="groupId" value="<%=roomId%>">
 		<button type="submit" value="addmember" name="button">メンバ追加</button>
 		<button type="submit" value="admin" name="button" <% if(admin==0){ %>disabled<% } %>>管理者変更</button>
 	</form>
