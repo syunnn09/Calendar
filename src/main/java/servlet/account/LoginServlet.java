@@ -22,6 +22,11 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (CommonUtil.isLogined(request)) {
+			response.sendRedirect("top");
+			return;
+		}
+
     	RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
     	dispatcher.forward(request, response);
 	}
@@ -30,9 +35,6 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (CommonUtil.isLogined(request)) {
-			response.sendRedirect("top");
-		}
 		HttpSession session = request.getSession();
 
 		request.setCharacterEncoding("UTF-8");
