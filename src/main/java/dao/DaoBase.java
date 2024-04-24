@@ -7,9 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DaoBase {
-	private final String JDBC_URL = "jdbc:mariadb://localhost:3306/calendar?characterEncoding=UTF-8&serverTimezone=JST";
-	private final String USER = "root";
-	private final String PASS = "mysql";
+//	private final String JDBC_URL = "jdbc:mariadb://localhost:3306/calendar?characterEncoding=UTF-8&serverTimezone=JST";
+//	private final String USER = "root";
+//	private final String PASS = "mysql";
+	private final String JDBC_URL = "jdbc:mariadb://10.24.108.136:3306/calendar?characterEncoding=UTF-8&serverTimezone=JST";
+	private final String USER = "R4A1XX";
+	private final String PASS = "passwd";
 
 	public Connection conn = null;
 
