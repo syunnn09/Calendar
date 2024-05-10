@@ -23,6 +23,17 @@ public class Group extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	
+	/**
+	 * javadocClass Group<br>
+	 * HTTP GETリクエストを処理し、グループ情報を表示します。
+	 * @author otubo
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレット例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
+	 * @version 1.0.0
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!CommonUtil.checkLogin(request, response)) {
 			return;
@@ -40,6 +51,17 @@ public class Group extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	
+	/**
+	 * javadocClass Group<br>
+	 * HTTP POSTリクエストを処理し、グループに関連する操作画面を表示します。
+	 * @author otubo
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレット例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
+	 * @version 1.0.0
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		GroupDao gd = new GroupDao();
