@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import dao.GroupDao;
 
 @WebServlet("/AddMemberServlet")
+/**
+ * addMenberServlet class
+ * グループのメンバー追加ができる画面の呼び出しを行う
+ * @author　ootubo,fukumori
+ * @version　1.0
+ */
 public class AddMemberServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

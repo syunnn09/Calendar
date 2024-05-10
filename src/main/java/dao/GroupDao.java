@@ -10,7 +10,14 @@ import bean.GroupInfoBean;
 import servlet.chat.ChatSessionManager;
 
 public class GroupDao extends DaoBase {
-	//グループ作成
+	
+	/**
+	 * グループの管理者権限を設定します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param bean 管理者権限を設定するグループのGroupBeanオブジェクト
+	 * @version 1.0.0
+	 */
 	public void admin(GroupBean bean) {
 		//データベースへ接続
 		open();
@@ -27,7 +34,15 @@ public class GroupDao extends DaoBase {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * グループをデータベースに挿入します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param bean 挿入するグループのGroupBeanオブジェクト
+	 * @return 挿入されたグループのID。挿入に失敗した場合は-1。
+	 * @version 1.0.0
+	 */
 	public int insert(GroupBean bean) {
 		//データベースへ接続
 		open();
@@ -51,6 +66,13 @@ public class GroupDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * グループからユーザーを削除します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param bean 削除するグループのGroupBeanオブジェクト
+	 * @version 1.0.0
+	 */
 	public void delete(GroupBean bean) {
 		//データベースへ接続
 		open();
@@ -70,7 +92,14 @@ public class GroupDao extends DaoBase {
 		}
 	 }
 
-
+	/**
+	 * 指定されたルームに参加していないユーザーの情報を取得します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param roomId ルームID
+	 * @return 指定されたルームに参加していないユーザーの情報を含むGroupInfoBeanオブジェクト。失敗した場合はnull。
+	 * @version 1.0.0
+	 */
 	public GroupInfoBean notmemSelect(int roomId) {
 		try {
 			open();
@@ -96,6 +125,14 @@ public class GroupDao extends DaoBase {
 		return null;
 	}
 
+	/**
+	 * 指定されたユーザーを指定されたルームに追加します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param userIds 追加するユーザーのIDの配列
+	 * @param roomId  追加先のルームのID
+	 * @version 1.0.0
+	 */
   	public void insert(int[] userIds, int roomId) {
 		try {
 			String users = "";
@@ -121,6 +158,14 @@ public class GroupDao extends DaoBase {
 
 	}
 
+  	/**
+  	 * 指定されたユーザーに管理者権限を付与します。
+  	 *
+  	 * @author ootubo,fukumori
+  	 * @param userIds 管理者権限を付与するユーザーのIDの配列
+  	 * @param roomId  管理者権限を付与するルームのID
+  	 * @version 1.0.0
+  	 */
 	public void grant(int[] userIds, int roomId) {
 		try {
 			open();
@@ -143,6 +188,14 @@ public class GroupDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * 指定されたルームに参加しているユーザーの情報を取得します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param roomId 取得するユーザー情報のルームID
+	 * @return 指定されたルームに参加しているユーザーの情報を含むGroupInfoBeanオブジェクト。失敗した場合はnull。
+	 * @version 1.0.0
+	 */
 	public GroupInfoBean yesmemSelect(int roomId) {
 		try {
 			open();
@@ -168,6 +221,15 @@ public class GroupDao extends DaoBase {
 		return null;
 	}
 
+	/**
+	 * 指定されたユーザーが指定されたルームの管理者であるかどうかを確認します。
+	 *
+	 * @author ootubo,fukumori
+	 * @param userId ユーザーID
+	 * @param roomId ルームID
+	 * @return 指定されたユーザーが管理者である場合は1、そうでない場合は0
+	 * @version 1.0.0
+	 */
 	public int adminCheck(int userId, int roomId) {
 		try {
 			open();
@@ -185,6 +247,14 @@ public class GroupDao extends DaoBase {
 		return 0;
 	}
 
+	/**
+	 * 指定されたユーザーの最後の閲覧状況を設定します。
+	 *
+	 * @author imamura
+	 * @param userId ユーザーID
+	 * @param roomId ルームID
+	 * @version 1.0.0
+	 */
 	public void setLastsaw(int userId, int roomId) {
 		try {
 			int maxChatId = getReadChatId(userId, roomId);
@@ -210,7 +280,15 @@ public class GroupDao extends DaoBase {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * 指定されたルームの最大チャットIDを取得します。
+	 *
+	 * @author imamura
+	 * @param roomId ルームID
+	 * @return 指定されたルームの最大チャットID。取得に失敗した場合は-1。
+	 * @version 1.0.0
+	 */
 	public int getMaxChatId(int roomId) {
 		int maxChatId = -1;
 		try {
@@ -229,6 +307,15 @@ public class GroupDao extends DaoBase {
 		return maxChatId;
 	}
 
+	/**
+	 * 指定されたユーザーが指定されたルームで最後に閲覧したチャットIDを取得します。
+	 *
+	 * @author imamura
+	 * @param userId ユーザーID
+	 * @param roomId ルームID
+	 * @return 指定されたユーザーが指定されたルームで最後に閲覧したチャットID。取得に失敗した場合は-1。
+	 * @version 1.0.0
+	 */
 	public int getReadChatId(int userId, int roomId) {
 		int maxChatId = -1;
 		try {
@@ -248,6 +335,14 @@ public class GroupDao extends DaoBase {
 		return maxChatId;
 	}
 
+	/**
+	 * 指定されたユーザーが参加しているすべてのグループ情報を取得します。
+	 *
+	 * @author imamura
+	 * @param userId ユーザーID
+	 * @return 指定されたユーザーが参加しているすべてのグループ情報を含むGroupInfoBeanオブジェクト。取得に失敗した場合はnull。
+	 * @version 1.0.0
+	 */
 	public GroupInfoBean getAllGroup(int userId) {
 		try {
 			open();
