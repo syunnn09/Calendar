@@ -24,8 +24,14 @@ public class ChatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * HTTP GET メソッドを処理し、チャットページを表示します。
+	 * 
+	 * @param request HTTPリクエスト
+	 * @param response HTTPレスポンス
+	 * @throws ServletException Servlet例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+     */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (!CommonUtil.checkLogin(request, response)) {
 			return;

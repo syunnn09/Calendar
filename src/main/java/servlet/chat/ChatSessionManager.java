@@ -23,6 +23,14 @@ public class ChatSessionManager {
 	GroupDao groupDao = new GroupDao();
 	private final String SYSTEM_USER_NAME = "SYSTEM";
 
+    /**
+     * ChatSessionManager のインスタンスを取得します。
+     * 
+     * @method getManager
+     * @return ChatSessionManager のインスタンス
+     * @author imamura
+     * @version 1.0.0
+     */
 	public static ChatSessionManager getManager() {
 		if (manager == null) {
 			manager = new ChatSessionManager();
@@ -30,6 +38,15 @@ public class ChatSessionManager {
 		return manager;
 	}
 
+    /**
+     * クエリ文字列からパラメータを抽出し、マップとして返します。
+     * 
+     * @method getQueryMap
+     * @param query クエリ文字列
+     * @return パラメータが格納されたマップ。クエリが null の場合は null を返します。
+     * @author imamura
+     * @version 1.0.0
+     */
 	public static Map<String, String> getQueryMap(String query) {
 		if (query == null) {
 			return null;
@@ -46,6 +63,16 @@ public class ChatSessionManager {
 
 	HashMap<String, List<ChatSessionBean>> sessions = new HashMap<>();
 
+    /**
+     * セッションを追加します。
+     * 
+     * @method addSession
+     * @param roomId ルームID
+     * @param curSession 現在のセッション
+     * @param queryString クエリ文字列
+     * @author imamura
+     * @version 1.0.0
+     */
 	public void addSession(String roomId, Session curSession, String queryString) {
 		List<ChatSessionBean> session = sessions.get(roomId);
 		if (session == null) {
@@ -61,6 +88,16 @@ public class ChatSessionManager {
 		sessions.replace(roomId, session);
 	}
 
+	/**
+     * 指定されたルームとセッションに対応するチャットセッションを取得します。
+     * 
+     * @method getUserSession
+     * @param roomId ルームID
+     * @param session セッション
+     * @return ChatSessionBean 指定されたルームとセッションに対応するチャットセッション。見つからない場合は null を返します。
+     * @author imamura
+     * @version 1.0.0
+     */
 	private ChatSessionBean getUserSession(String roomId, Session session) {
 		List<ChatSessionBean> list = sessions.get(roomId);
 		for (ChatSessionBean bean : list) {
@@ -71,6 +108,15 @@ public class ChatSessionManager {
 		return null;
 	}
 
+	/**
+     * メッセージを含む HashMap を JSON 形式の文字列に変換します。
+     * 
+     * @method getJson
+     * @param messages メッセージを含む HashMap
+     * @return String JSON 形式の文字列。メッセージが空の場合は空の JSON オブジェクト "{}" を返します。
+     * @author imamura
+     * @version 1.0.0
+     */
 	private String getJson(HashMap<String, String> messages) {
 		String text = "{";
 		int count = 0;
@@ -85,6 +131,16 @@ public class ChatSessionManager {
 		return text;
 	}
 
+	/**
+     * 指定されたルームとセッションに対応するユーザーセッションを削除します。
+     * 
+     * @method removeSession
+     * @param roomId ルームID
+     * @param curSession 現在のセッション
+     * @throws NullPointerException 指定されたセッションが存在しない場合
+     * @author imamura
+     * @version 1.0.0
+     */
 	public void removeSession(String roomId, Session curSession) {
 		ChatSessionBean userSession = getUserSession(roomId, curSession);
 		List<ChatSessionBean> session = sessions.get(roomId);
@@ -92,6 +148,14 @@ public class ChatSessionManager {
 		sessions.replace(roomId, session);
 	}
 
+	/**
+     * チャットを送信します。
+     * 
+     * @method sendMessage
+     * @param chat 送信するチャット情報を含む ChatBean オブジェクト
+     * @author imamura
+     * @version 1.0.0
+     */
 	public void sendMessage(ChatBean chat) {
 		now = LocalDateTime.now();
 		String nowstr = dtf.format(now);
@@ -119,6 +183,16 @@ public class ChatSessionManager {
 		}
 	}
 
+	/**
+     * メッセージを受信した際に呼び出されるメソッドです。
+     * 
+     * @method onMessage
+     * @param roomId メッセージが属するルームのID
+     * @param user メッセージを送信したユーザーのセッション
+     * @param message 受信したメッセージの内容
+     * @author imamura
+     * @version 1.0.0
+     */
 	public void onMessage(String roomId, Session user, String message) {
 		message = message.replace("\n", "<br>");
 		int room = Integer.parseInt(roomId);
@@ -128,6 +202,13 @@ public class ChatSessionManager {
 		this.sendMessage(chat);
 	}
 
+	/**
+     * システムメッセージを送信します。
+     * 
+     * @method sendSystemMessage
+     * @param roomId メッセージを送信するルームのID
+     * @param message 送信するメッセージの内容
+     */
 	public void sendSystemMessage(int roomId, String message) {
 		ChatBean chat = new ChatBean();
 		chat.setRoomId(roomId);

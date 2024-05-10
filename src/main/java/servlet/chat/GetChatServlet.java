@@ -22,8 +22,15 @@ public class GetChatServlet extends HttpServlet {
 	ChatDao chatDao = new ChatDao();
 
 	/**
+	 * HTTP POST メソッドを処理し、チャット情報を取得して JSON 形式で応答します。
+	 * 
+	 * @method doPost
+	 * @param request HTTPリクエスト
+	 * @param response HTTPレスポンス
+	 * @throws ServletException Servlet例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+     */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("utf-8");
 		int page = Integer.parseInt(request.getParameter("page"));
