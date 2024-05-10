@@ -36,7 +36,17 @@ public class EditAccountServlet extends HttpServlet {
 	}
 
 	/**
+	 * HTTP POSTリクエストを処理し、ユーザーのアカウント情報を更新します。
+	 * リクエストからパスワードとユーザー名を取得し、それらを使用してアカウント情報を更新します。
+	 *
+	 * @method doPost
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレットで例外が発生した場合
+	 * @throws IOException 入出力に関する例外が発生した場合
+	 * @version 1.0.0
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author rerere
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
