@@ -22,6 +22,18 @@ public class RemoveMemberServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+
+	/**
+	 * @method RemoveMemberServlet<br>
+	 * HTTP GETリクエストを処理し、メンバーの削除画面を表示します。
+	 * @author otubo
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレット例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
+	 * @version 1.0.0
+	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
@@ -39,6 +51,18 @@ public class RemoveMemberServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+
+	/**
+	 * @method RemoveMemberServlet<br>
+	 * HTTP POSTリクエストを処理し、指定されたメンバーをグループから削除します。
+	 * @author otubo
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレット例外が発生した場合
+	 * @throws IOException 入出力例外が発生した場合
+	 * @version 1.0.0
+	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
