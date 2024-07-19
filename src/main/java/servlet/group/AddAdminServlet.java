@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import dao.GroupDao;
 
 @WebServlet("/AddAdminServlet")
+/**
+ * addAdminServelt class
+ * グループの管理者を変更する画面の呼び出しを行う
+ * @author　fukumori
+ * @version　1.0
+ */
 public class AddAdminServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
