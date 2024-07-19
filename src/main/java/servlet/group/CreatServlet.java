@@ -14,22 +14,11 @@ import dao.GroupDao;
 
 /**
  * Servlet implementation class CreatServlet
- * 
  */
 @WebServlet("/CreatServlet")
 public class CreatServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * javadocClass CreatServlet<br>
-	 * HTTP POSTリクエストを処理し、グループを新規作成します。
-	 * @author otubo
-	 * @param request HTTPリクエストオブジェクト
-	 * @param response HTTPレスポンスオブジェクト
-	 * @throws ServletException サーブレット例外が発生した場合
-	 * @throws IOException 入出力例外が発生した場合
-	 * @version 1.0.0
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//文字コードの指定
 		request.setCharacterEncoding("UTF-8");
