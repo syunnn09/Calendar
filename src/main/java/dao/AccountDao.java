@@ -9,6 +9,14 @@ import bean.AccountInfoBean;
 import model.UserModel;
 
 public class AccountDao extends DaoBase {
+	/**
+	 * サンプルメソッドです。
+	 * データベースからサンプルテーブルのデータを取得し、表示します。
+	 *
+	 * @method sample
+	 * @author rerere
+	 * @version 1.0.0
+	 */
 	public void sample() {
 		this.open();
 
@@ -29,6 +37,19 @@ public class AccountDao extends DaoBase {
 		this.close();
 	}
 
+	/**
+	 * ユーザーのログインを試みます。
+	 * 指定されたメールアドレスとパスワードを使用してデータベースからユーザーを検索し、ログイン状態を返します。
+	 *
+	 * @method login
+	 * @param email ログインするユーザーのメールアドレス
+	 * @param password ログインするユーザーのパスワード
+	 * @return ログインしたユーザーのユーザーモデル。ログインに失敗した場合はnullを返します。
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws NullPointerException emailまたはpasswordがnullの場合
+	 * @author rerere
+	 * @version 1.0.0
+	 */
 	public UserModel login(String email, String password) {
 		open();
 		try {
@@ -53,6 +74,16 @@ public class AccountDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * アカウント情報をデータベースに追加します。
+	 *
+	 * @method addUser
+	 * @param beans 追加するアカウント情報を持つAccountInfoBeanオブジェクト
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws NullPointerException beansがnullの場合
+	 * @author rerere
+	 * @version 1.0.0
+	 */
 	public void addUser(AccountInfoBean beans) {
 		this.open();
 
@@ -73,6 +104,19 @@ public class AccountDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * ユーザーのパスワードを変更します。
+	 *
+	 * @method changePassword
+	 * @param userId パスワードを変更するユーザーのID
+	 * @param password 新しいパスワード
+	 * @return パスワードの変更が成功した場合はtrue、失敗した場合はfalseを返します。
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws NullPointerException passwordがnullの場合
+	 * @throws IllegalArgumentException userIdが負の値の場合
+	 * @author rerere
+	 * @version 1.0.0
+	 */
 	public boolean changePassword(int userId, String password) {
 		this.open();
 		try {
@@ -89,6 +133,17 @@ public class AccountDao extends DaoBase {
 		}
 	}
 	
+	/**
+	 * アカウント情報を更新します。
+	 *
+	 * @method update
+	 * @param account 更新するアカウント情報を持つAccountBeanオブジェクト
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws NullPointerException accountがnullの場合
+	 * @throws IllegalArgumentException userIdが負の値の場合
+	 * @version 1.0.0
+	 * @author rerere
+	 */
 	public void update(AccountBean account) {
 		this.open();
 		String sql = "UPDATE users SET name = ?, password = ? WHERE userId = ?";
@@ -105,6 +160,17 @@ public class AccountDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * 指定されたユーザーIDに関連付けられたユーザー名を取得します。
+	 *
+	 * @method getName
+	 * @param userId 取得するユーザー名のユーザーID
+	 * @return 指定されたユーザーIDに関連付けられたユーザー名。見つからない場合は空の文字列を返します。
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws IllegalArgumentException userIdが負の値の場合
+	 * @version 1.0.0
+	 * @author rerere
+	 */
 	public String getName(int userId) {
 		this.open();
 		String sql = "SELECT name FROM users WHERE userId = ?";
@@ -122,6 +188,17 @@ public class AccountDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * 指定されたメールアドレスに関連付けられたログイン状態を取得します。
+	 *
+	 * @method getIsLogined
+	 * @param email ログイン状態を取得するユーザーのメールアドレス
+	 * @return 指定されたメールアドレスに関連付けられたログイン状態。ログインしている場合は1、ログインしていない場合は0を返します。見つからない場合は-1を返します。
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws NullPointerException emailがnullの場合
+	 * @version 1.0.0
+	 * @author rerere
+	 */
 	public int getIsLogined(String email) {
 		this.open();
 
@@ -142,6 +219,18 @@ public class AccountDao extends DaoBase {
 		}
 	}
 
+	/**
+	 * 指定されたユーザーIDとルームIDの組み合わせが存在するかどうかを確認します。
+	 *
+	 * @method checkJoin
+	 * @param userId チェックするユーザーのID
+	 * @param roomId チェックするルームのID
+	 * @return 指定されたユーザーIDとルームIDの組み合わせが存在する場合はtrue、それ以外の場合はfalseを返します。
+	 * @throws SQLException データベースに関するエラーが発生した場合
+	 * @throws IllegalArgumentException userIdまたはroomIdが負の値の場合
+	 * @version 1.0.0
+	 * @author rerere
+	 */
 	public boolean checkJoin(int userId, int roomId) {
 		try {
 			this.open();

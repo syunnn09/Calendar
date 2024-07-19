@@ -23,7 +23,16 @@ public class ChangeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	/**
+	 * HTTP GETリクエストを処理し、パスワード変更用のJSPページにフォワードします。
+	 *
+	 * @method doGet
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレットで例外が発生した場合
+	 * @throws IOException 入出力に関する例外が発生した場合
+	 * @version 1.0.0
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author rerere
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/account/change.jsp");
@@ -31,7 +40,17 @@ public class ChangeServlet extends HttpServlet {
 	}
 
 	/**
+	 * HTTP POSTリクエストを処理し、ユーザーのパスワードを変更します。
+	 * 変更が成功した場合、トップページにリダイレクトします。変更に失敗した場合、エラーメッセージを表示します。
+	 *
+	 * @method doPost
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレットで例外が発生した場合
+	 * @throws IOException 入出力に関する例外が発生した場合
+	 * @version 1.0.0
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author rerere
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");

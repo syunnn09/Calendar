@@ -25,9 +25,18 @@ import dao.AccountDao;
 @MultipartConfig(maxFileSize=1048576)
 public class AddUserServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
+	 * HTTP GETリクエストを処理し、ユーザー登録用のJSPページにフォワードします。
+	 *
+	 * @method doGet
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレットで例外が発生した場合
+	 * @throws IOException 入出力に関する例外が発生した場合
+	 * @version 1.0.0
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @author rerere
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/account/addUser.jsp");
@@ -35,7 +44,18 @@ public class AddUserServlet extends HttpServlet {
 	}
 
 	/**
+	 * HTTP POSTリクエストを処理し、ユーザー情報をデータベースに追加します。
+	 * また、ユーザー情報がCSVファイルで提供され、ファイル内の各行が1つのユーザー情報を表すことを想定しています。
+	 * ユーザー情報が正常に追加された場合、ユーザー登録完了メッセージを表示します。追加中に問題が発生した場合、その行番号を含むエラーメッセージを表示します。
+	 *
+	 * @method doPost
+	 * @param request HTTPリクエストオブジェクト
+	 * @param response HTTPレスポンスオブジェクト
+	 * @throws ServletException サーブレットで例外が発生した場合
+	 * @throws IOException 入出力に関する例外が発生した場合
+	 * @version 1.0.0
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @author rerere
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
